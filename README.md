@@ -1,2 +1,2 @@
 # HentaiManager
-A programme that help you manage your homework
+A program that help you manage your homework
