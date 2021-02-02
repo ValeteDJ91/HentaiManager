@@ -1,0 +1,22 @@
+{
+  "name": "hentaimanager",
+  "version": "0.0.1",
+  "description": "a program that help you manage your homework",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ValeteDJ91/HentaiManager.git"
+  },
+  "author": "Valete_",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ValeteDJ91/HentaiManager/issues"
+  },
+  "homepage": "https://github.com/ValeteDJ91/HentaiManager#readme",
+  "devDependencies": {
+    "electron": "^11.2.1"
+  }
+}
