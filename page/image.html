@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hentai manager v0.0.1</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link href="../css/stylesheets.css" rel="stylesheet">
+</head>
+<style>
+
+</style>
+<body>
+    <div class="area"></div><nav class="main-menu" style="position:fixed">
+        <ul>
+            <li>
+                <i class="fa fa-2x"><img style="height: 35px" src="../img/icon.ico"></i>
+                <span class="nav-text" style="color: #ffffff;">
+                    HentaiManager
+                </span>
+            </li>
+            <li>
+                <a href="../index.html">
+                    <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/dashboard.png"></i>
+                    <span class="nav-text">
+                        Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="has-subnav">
+                <a href="">
+                    <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/image.png"></i>
+                    <span class="nav-text">
+                        Image
+                    </span>
+                </a>
+            </li>
+            <li class="has-subnav">
+                <a href="doujinshi.html">
+                    <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/doujinshi.png"></i>
+                    <span class="nav-text">
+                        Doujinshi
+                    </span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="logout">
+            <li>
+               <a href="settings.html">
+                    <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/settings.png"></i>
+                    <span class="nav-text">
+                        Settings
+                    </span>
+                </a>
+            </li>  
+        </ul>
+    </nav>
+    <div id="mainpage" style="margin-left: 75px;margin-top: 15px;margin-right: 15px;">
+        <div id="parameterheaderleft" style="text-align: left;">
+        </div>
+        <div id="parameterheaderright" style="text-align: right;">
+            <!--IMG SIZE SLIDER-->
+            <a style="color:#ffffff">Image size: </a>
+            <input type="range" min="1" max="6" value="3" class="slider" id="sizeslider" style="vertical-align: middle">
+        </div>
+        <div id="imagezone">
+            <!--IMGS-->
+        </div>
+        <div id="imgmodal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="modalimg">
+            <p id="captionmodal" style="text-align:center"></p>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    //find all imgs and create <img> with src
+    const fs = require('fs');
+    const sizeOf = require('image-size');
+
+    var filearray = [];
+    var i = 0;
+    var max_height = [1, 40, 75, 130, 230, 400, 600];
+    var max_width = [1, 40, 75, 130, 230, 400, 600];
+    var new_width;
+    var new_height;
+    var slider = document.getElementById("sizeslider");
+
+    fs.readdirSync("image").forEach(file => {
+        filearray.push(file);
+    });
+    var imagezone = document.getElementById("imagezone");
+    while (i !== filearray.length) {
+        var img = document.createElement("img");
+        img.src = "../image/"+filearray[i];
+        imagezone.appendChild(img);
+        var imgsize = sizeOf("image/"+filearray[i])
+        img.id = "img"+i
+        img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px`
+        img.alt = `${filearray[i]}`
+        img.setAttribute('onclick',"modal.style.display = 'block'; modalImg.src = this.src; captionText.innerHTML = this.alt;")
+        if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
+        {
+            ratio = max_height[slider.value] / img.height;
+            new_height = img.height * ratio;
+            new_width = img.width * ratio;
+        }
+        if(img.width > max_width[slider.value]  && img.width>img.height)
+        {
+            ratio = max_width[slider.value] / img.width;
+            new_height = img.height * ratio;
+            new_width = img.width * ratio;
+        }
+        if(slider.value > 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 7px;margin-top: 4px;` }
+        if(slider.value <= 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;` }
+        i++
+    }
+    //slider img size
+    slider.oninput = function() {
+        var i = 0
+        while (i !== filearray.length) {
+            var img = document.getElementById("img"+i);
+            var imgsize = sizeOf("image/"+filearray[i])
+            img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px`
+            if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
+            {
+                ratio = max_height[slider.value] / img.height;
+                new_height = img.height * ratio;
+                new_width = img.width * ratio;
+            }
+            if(img.width > max_width[slider.value]  && img.width>img.height)
+            {
+                ratio = max_width[slider.value] / img.width;
+                new_height = img.height * ratio;
+                new_width = img.width * ratio;
+            }
+            if(slider.value > 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 7px;margin-top: 4px;` }
+            if(slider.value == 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;` }
+            if(slider.value < 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 1px;margin-top: 1px;` }
+            i++
+        }
+    }
+    //modal/zoom
+    var modal = document.getElementById("imgmodal");
+    var modalImg = document.getElementById("modalimg");
+    var captionText = document.getElementById("captionmodal");
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>

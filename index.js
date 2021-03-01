@@ -6,7 +6,8 @@ function createWindow () {
     height: 864,
     backgroundColor: "171C1D",
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
     },
     icon: __dirname + '/img/icon.ico'
   })

@@ -18,5 +18,11 @@
   "homepage": "https://github.com/ValeteDJ91/HentaiManager#readme",
   "devDependencies": {
     "electron": "^11.2.1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.839.0",
+    "fs": "0.0.1-security",
+    "image-size": "^0.9.4",
+    "jquery": "^3.5.1"
   }
 }
