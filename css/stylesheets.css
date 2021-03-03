@@ -8,7 +8,7 @@ body,html {
     padding:0px;
 }
 p { color:#b3b3b3; }
-h1 { color:  #EBEBEB; }
+h1,h2 { color:  #EBEBEB; }
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 .fa {
 position: relative;
@@ -268,3 +268,4 @@ background-color:#747474;
 .card-text:last-child {
   margin-bottom: 0;
 }
+

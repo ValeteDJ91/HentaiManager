@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hentai manager v0.0.4</title>
+    <title id="title">Hentai manager</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link href="../css/stylesheets.css" rel="stylesheet">
 </head>
@@ -80,7 +80,10 @@
 <script>
     const fs = require('fs');
     const sizeOf = require('image-size');
+    const settings = require('../data/settings.json');
     sizeOf.setConcurrency(100000000)
+    
+    document.getElementById("title").innerHTML = settings.version
 
     var filearray = [];
     var i = 0;
@@ -90,7 +93,8 @@
     var new_height;
     var slider = document.getElementById("sizeslider");
     var imgerrordir = "image/Image_errors";
-    var imgtoload = 800
+    var imgtoload = settings.image.imgloadfirst
+    if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgsize)}
 
 
     //find all imgs and create <img> with src
@@ -148,7 +152,7 @@
     // load more image on scroll
     document.body.addEventListener('scroll',()=>{
         if (document.body.scrollTop+5000 > document.body.scrollHeight) {
-            imgtoload = imgtoload+500
+            imgtoload = imgtoload+settings.image.imgloadscroll
             loadimage()
         }
     })
@@ -159,7 +163,6 @@
         while (j !== filearray.length && j < imgtoload) {
             var img = document.getElementById("img"+j);
             var imgsize = sizeOf("image/"+filearray[j])
-            img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px`
             if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
             {
                 ratio = max_height[slider.value] / img.height;
