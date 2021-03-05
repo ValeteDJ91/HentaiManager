@@ -63,7 +63,7 @@
             <a style="color:#ffffff">Image size: </a>
             <input type="range" min="1" max="6" value="3" class="slider" id="sizeslider" style="vertical-align: middle">
         </div>
-        <div id="imagezone">
+        <div id="imagezone" style="text-align: center">
             <!--IMGS-->
         </div>
         <!--IMG MODAL/ZOOM-->
@@ -110,11 +110,10 @@
                     var imgsize = sizeOf("image/"+filearray[i])
                     var img = document.createElement("img");
                     img.src = "../image/"+filearray[i];
-
-                    imagezone.appendChild(img);
                     console.log(filearray[i])
+                    imagezone.appendChild(img);
                     img.id = "img"+i
-                    img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px`
+                    img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px;vertical-align: middle;`
                     img.alt = `${filearray[i]}`
                     img.setAttribute('onclick',"modal.style.display = 'block'; modalImg.src = this.src; captionText.innerHTML = this.alt;")
                     if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
@@ -129,8 +128,8 @@
                         new_height = img.height * ratio;
                         new_width = img.width * ratio;
                     }
-                    if(slider.value > 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 7px;margin-top: 4px;` }
-                    if(slider.value <= 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;` }
+                    if(slider.value > 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 7px;margin-top: 4px;vertical-align: middle;` }
+                    if(slider.value <= 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;vertical-align: middle;` }
                 } catch(error) {
                     console.error(error);
                     console.error("Problem loading image: image/"+filearray[i]);
@@ -163,6 +162,7 @@
         while (j !== filearray.length && j < imgtoload) {
             var img = document.getElementById("img"+j);
             var imgsize = sizeOf("image/"+filearray[j])
+            img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px`
             if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
             {
                 ratio = max_height[slider.value] / img.height;
@@ -175,9 +175,9 @@
                 new_height = img.height * ratio;
                 new_width = img.width * ratio;
             }
-            if(slider.value > 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 7px;margin-top: 4px;` }
-            if(slider.value == 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;` }
-            if(slider.value < 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 1px;margin-top: 1px;` }
+            if(slider.value > 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 7px;margin-top: 4px;vertical-align: middle;` }
+            if(slider.value == 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;vertical-align: middle;` }
+            if(slider.value < 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 1px;margin-top: 1px;vertical-align: middle;` }
             j++
         }
     }

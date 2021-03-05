@@ -56,12 +56,107 @@
         </ul>
     </nav>
     <div id="main" style="margin-left: 75px;margin-top: 15px;margin-right: 15px;">
+        <!--DOUJINSHI ZONE-->
+        <div id="doujinshizone" style="text-align: center">
+
+        </div>
+        <!--DOUJINSHI MODAL/ZOOM-->
+        <div id="doujinshimodal" class="modal" style="margin-bottom: 30px; text-align:center">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="modaldoujinshi">
+            <p id="captionmodal" style="text-align:center"></p>
+            <button id= "back" onclick= "pg--; viewdoujinshi(pg, this.alt); console.log(pg)">retour</button>
+            <button id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt); console.log(pg)">suivant</button>
+            <br><br><br><br><br><br><br>
+        </div>
     </div>
 </body>
 </html>
 
 <script>
     const settings = require('../data/settings.json');
-
     document.getElementById("title").innerHTML = settings.version
+
+    const fs = require('fs');
+    const sizeOf = require('image-size');
+    sizeOf.setConcurrency(100000000)
+    var doujinshiarray = [];
+    var folderarray = [];
+    var i = 0;
+    var max_height = 230;
+    var max_width = 230;
+    var pg = 0
+
+    // read all folder show them with title and first page
+    fs.readdirSync("doujinshi").forEach(file => {
+        folderarray.push(file);
+    });
+    var doujinshizone = document.getElementById("doujinshizone");
+    while(i < folderarray.length) {
+        doujinshiarray = [];
+        fs.readdirSync("doujinshi/"+folderarray[i]).forEach(file => {
+            doujinshiarray.push(file);
+        });
+        var previewsize = sizeOf("doujinshi/"+folderarray[i]+"/"+doujinshiarray[0])
+        var previewcontainer = document.createElement("div");
+        var preview = document.createElement("img");
+        var title = document.createElement("p");
+        preview.src = "../doujinshi/"+folderarray[i]+"/"+doujinshiarray[0];
+        preview.style = `height: ${previewsize.height}px; width: ${previewsize.width}px`
+        title.innerHTML = folderarray[i]
+        previewcontainer.alt = folderarray[i]
+        previewcontainer.id = "contdoujinshi"+i
+        title.style = `margin: 6px;font-size: 13px;`
+        previewcontainer.appendChild(preview);
+        previewcontainer.appendChild(title);
+        previewcontainer.setAttribute('onclick',`modal.style.display = 'block'; pg = 0; captionmodal.innerHTML = this.alt; viewdoujinshi(${pg}, "${folderarray[i]}"); document.getElementById("back").alt = "${folderarray[i]}"; document.getElementById("forward").alt = "${folderarray[i]}"`)
+        doujinshizone.appendChild(previewcontainer);
+        if(preview.height > max_height && preview.height>preview.width || preview.height==preview.width)
+        {
+            ratio = max_height / preview.height;
+            new_height = preview.height * ratio;
+            new_width = preview.width * ratio;
+        }
+        if(preview.width > max_width  && preview.width>preview.height)
+        {
+            ratio = max_width / preview.width;
+            new_height = preview.height * ratio;
+            new_width = preview.width * ratio;
+        }
+        preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
+        previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;`
+        i++;
+    }
+
+    //modal/zoom
+    var modal = document.getElementById("doujinshimodal");
+    var modalImg = document.getElementById("modaldoujinshi");
+    var captionText = document.getElementById("captionmodal");
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function viewdoujinshi(page, title) {
+        doujinshiarray = [];
+        fs.readdirSync("doujinshi/"+title).forEach(file => {
+            doujinshiarray.push(file);
+        });
+        if (page >= doujinshiarray.length) {
+            page = 0
+            pg = 0
+        }
+        if (page < 0) {
+            page = doujinshiarray.length-1
+            pg = doujinshiarray.length-1
+        }
+        modalImg.src = "../doujinshi/"+title+"/"+doujinshiarray[page];
+        console.log(title)
+        console.log(doujinshiarray)
+    }
 </script>
