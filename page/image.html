@@ -94,6 +94,7 @@
     var slider = document.getElementById("sizeslider");
     var imgerrordir = "image/Image_errors";
     var imgtoload = settings.image.imgloadfirst
+    var imgtoloadscroll = settings.image.imgloadscroll
     if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgsize)}
 
 
@@ -103,8 +104,9 @@
     });
     var imagezone = document.getElementById("imagezone");
     if (filearray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";imagezone.appendChild(nfa);nfa.innerHTML = "No images found ;(";}
-    function loadimage(){
-        while (i !== filearray.length && i < imgtoload) {
+    function loadimage(toload){
+        var z = 0;
+        while (i < filearray.length && z < toload) {
             if (filearray[i].includes(".png")||filearray[i].includes(".jpg")||filearray[i].includes(".jpeg")||filearray[i].includes(".gif")) {
                 try{
                     var imgsize = sizeOf("image/"+filearray[i])
@@ -144,15 +146,15 @@
                 }
             }
             i++
+            z++
         }
     }
-    loadimage()
+    loadimage(imgtoload)
 
     // load more image on scroll
     document.body.addEventListener('scroll',()=>{
         if (document.body.scrollTop+5000 > document.body.scrollHeight) {
-            imgtoload = imgtoload+settings.image.imgloadscroll
-            loadimage()
+            loadimage(imgtoloadscroll)
         }
     })
 
