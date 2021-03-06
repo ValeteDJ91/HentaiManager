@@ -61,12 +61,11 @@
 
         </div>
         <!--DOUJINSHI MODAL/ZOOM-->
-        <div id="doujinshimodal" class="modal" style="margin-bottom: 30px; text-align:center">
+        <div id="doujinshimodal" class="modal" style="margin-bottom: 30px;">
             <span class="close">&times;</span>
-            <img class="modal-content" id="modaldoujinshi">
+            <img class="modal-content" id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
             <p id="captionmodal" style="text-align:center"></p>
-            <button id= "back" onclick= "pg--; viewdoujinshi(pg, this.alt); console.log(pg)">retour</button>
-            <button id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt); console.log(pg)">suivant</button>
+            <button class="modal-content" id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 1010px;width: 360px;top: 100px;left: 50%"></button>
             <br><br><br><br><br><br><br>
         </div>
     </div>
@@ -92,39 +91,42 @@
         folderarray.push(file);
     });
     var doujinshizone = document.getElementById("doujinshizone");
+    if (folderarray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";doujinshizone.appendChild(nfa);nfa.innerHTML = "No doujinshi found ;(";}
     while(i < folderarray.length) {
         doujinshiarray = [];
         fs.readdirSync("doujinshi/"+folderarray[i]).forEach(file => {
             doujinshiarray.push(file);
         });
-        var previewsize = sizeOf("doujinshi/"+folderarray[i]+"/"+doujinshiarray[0])
-        var previewcontainer = document.createElement("div");
-        var preview = document.createElement("img");
-        var title = document.createElement("p");
-        preview.src = "../doujinshi/"+folderarray[i]+"/"+doujinshiarray[0];
-        preview.style = `height: ${previewsize.height}px; width: ${previewsize.width}px`
-        title.innerHTML = folderarray[i]
-        previewcontainer.alt = folderarray[i]
-        previewcontainer.id = "contdoujinshi"+i
-        title.style = `margin: 6px;font-size: 13px;`
-        previewcontainer.appendChild(preview);
-        previewcontainer.appendChild(title);
-        previewcontainer.setAttribute('onclick',`modal.style.display = 'block'; pg = 0; captionmodal.innerHTML = this.alt; viewdoujinshi(${pg}, "${folderarray[i]}"); document.getElementById("back").alt = "${folderarray[i]}"; document.getElementById("forward").alt = "${folderarray[i]}"`)
-        doujinshizone.appendChild(previewcontainer);
-        if(preview.height > max_height && preview.height>preview.width || preview.height==preview.width)
-        {
-            ratio = max_height / preview.height;
-            new_height = preview.height * ratio;
-            new_width = preview.width * ratio;
+        if (doujinshiarray.length !== 0){
+            var previewsize = sizeOf("doujinshi/"+folderarray[i]+"/"+doujinshiarray[0])
+            var previewcontainer = document.createElement("div");
+            var preview = document.createElement("img");
+            var title = document.createElement("p");
+            preview.src = "../doujinshi/"+folderarray[i]+"/"+doujinshiarray[0];
+            preview.style = `height: ${previewsize.height}px; width: ${previewsize.width}px`
+            title.innerHTML = folderarray[i]
+            previewcontainer.alt = folderarray[i]
+            previewcontainer.id = "contdoujinshi"+i
+            title.style = `margin: 6px;font-size: 13px;`
+            previewcontainer.appendChild(preview);
+            previewcontainer.appendChild(title);
+            previewcontainer.setAttribute('onclick',`modal.style.display = 'block'; pg = 0; captionmodal.innerHTML = this.alt; viewdoujinshi(${pg}, "${folderarray[i]}"); document.getElementById("modaldoujinshi").alt = "${folderarray[i]}"; document.getElementById("forward").alt = "${folderarray[i]}"`)
+            doujinshizone.appendChild(previewcontainer);
+            if(preview.height > max_height && preview.height>preview.width || preview.height==preview.width)
+            {
+                ratio = max_height / preview.height;
+                new_height = preview.height * ratio;
+                new_width = preview.width * ratio;
+            }
+            if(preview.width > max_width  && preview.width>preview.height)
+            {
+                ratio = max_width / preview.width;
+                new_height = preview.height * ratio;
+                new_width = preview.width * ratio;
+            }
+            preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
+            previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;`
         }
-        if(preview.width > max_width  && preview.width>preview.height)
-        {
-            ratio = max_width / preview.width;
-            new_height = preview.height * ratio;
-            new_width = preview.width * ratio;
-        }
-        preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
-        previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;`
         i++;
     }
 
@@ -156,7 +158,5 @@
             pg = doujinshiarray.length-1
         }
         modalImg.src = "../doujinshi/"+title+"/"+doujinshiarray[page];
-        console.log(title)
-        console.log(doujinshiarray)
     }
 </script>
