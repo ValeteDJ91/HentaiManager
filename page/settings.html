@@ -65,8 +65,8 @@
             </div>
             <div style="margin-top: 13px;">
                 <a style="color:#ffffff">Image default size: </a>
-                <input type="range" min="1" max="6" value="3" class="slider" id="sizeslider" style="vertical-align: middle">
-                <a id="slidervaluetext" style="color:#ffffff"></a>
+                <input type="range" min="1" max="6" value="3" class="slider" id="imgsizeslider" style="vertical-align: middle">
+                <a id="imgslidervaluetext" style="color:#ffffff"></a>
             </div>
             <div>
                 <label for="imgloadfirst" style="color:#ffffff;">How many image will load:  </label>
@@ -85,6 +85,11 @@
                 <label for="doujinshifoldloc" style="color:#ffffff;">Doujinshi folder location: </label>
                 <input id="doujinshifoldloc" value="" style="color:#000000;width: 300px;height: 17px;">
             </div>
+            <div style="margin-top: 13px;">
+                <a style="color:#ffffff">Doujinshi default size when zoom in: </a>
+                <input type="range" min="0" max="23" value="12" class="slider" id="doujsizeslider" style="vertical-align: middle;width: 200px">
+                <a id="doujslidervaluetext" style="color:#ffffff"></a>
+            </div>
         </div>
         <a style="color:#199c0d;font-size:20px;" id="saved"></a>
     </div>
@@ -96,12 +101,14 @@ const fs = require('fs')
 
 var jsoninput = fs.readFileSync('data/settings.json', 'utf8')
 var settings = JSON.parse(jsoninput)
-var slidervaluetext = ["HOW", "tiny", "small", "normal", "big", "huge", "just click on it at this point"];
+var imgslidervaluetext = ["HOW", "tiny", "small", "normal", "big", "huge", "just click on it at this point"];
 var imgfoldloc = document.getElementById("imgfoldloc");
-var sizeslider = document.getElementById("sizeslider");
+var imgsizeslider = document.getElementById("imgsizeslider");
 var imgloadfirst = document.getElementById("imgloadfirst");
 var imgloadscroll = document.getElementById("imgloadscroll");
 var doujinshifoldloc = document.getElementById("doujinshifoldloc");
+var doujsizeslider = document.getElementById("doujsizeslider");
+var zoomarray = [25, 37.5, 50, 62.5, 75, 87.5, 100, 112.5, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500];
 
 // img folder location
 if (settings.image.folder) {imgfoldloc.setAttribute('value',settings.image.folder)}
@@ -110,13 +117,13 @@ imgfoldloc.addEventListener('change', (updateValue) => {
     savesettings()
 });
 
-// feault img size
-document.getElementById("slidervaluetext").innerHTML = slidervaluetext[sizeslider.value]
-if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgsize)}
-sizeslider.oninput = function() {
-    settings.image.imgsize = sizeslider.value
+// default img size
+if (settings.image.imgsize) {imgsizeslider.setAttribute('value',settings.image.imgsize)}
+document.getElementById("imgslidervaluetext").innerHTML = imgslidervaluetext[imgsizeslider.value]
+imgsizeslider.oninput = function() {
+    settings.image.imgsize = imgsizeslider.value
     savesettings()
-    document.getElementById("slidervaluetext").innerHTML = slidervaluetext[sizeslider.value]
+    document.getElementById("imgslidervaluetext").innerHTML = imgslidervaluetext[imgsizeslider.value]
 }
 
 // img first load
@@ -139,6 +146,16 @@ doujinshifoldloc.addEventListener('change', (updateValue) => {
     settings.doujinshi.folder = event.target.value
     savesettings()
 });
+
+// default doujinshimodal size  // 25 37.5 50 62.5 75 87.5 100 112.5 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475 500 
+if (settings.doujinshi.zoomindex) {doujsizeslider.setAttribute('value',zoomarray.indexOf(settings.doujinshi.zoomindex))}
+document.getElementById("doujslidervaluetext").innerHTML = zoomarray[doujsizeslider.value]+"%"
+doujsizeslider.oninput = function() {
+    console.log(zoomarray[doujsizeslider.value])
+    document.getElementById("doujslidervaluetext").innerHTML = zoomarray[doujsizeslider.value]+"%"
+    settings.doujinshi.zoomindex = zoomarray[doujsizeslider.value]
+    savesettings()
+}
 
 // save changes
 function savesettings(){

@@ -62,10 +62,15 @@
         </div>
         <!--DOUJINSHI MODAL/ZOOM-->
         <div id="doujinshimodal" class="modal" style="margin-bottom: 30px;">
+            <div style="vertical-align: middle;position: relative;top: -34px;left: 85px;">
+                <img src="../img/zoomout.png" style="width: 27px;display:inline-block;vertical-align: middle;" onclick="zoomout()">
+                <p id="zoompercent" style="display:inline-block;color: #d1d1d1;font-size: 17px;vertical-align: middle;">100%</p>
+                <img src="../img/zoomin.png" style="width: 27px;display:inline-block;vertical-align: middle;" onclick="zoomin()">
+            </div>
             <span class="close">&times;</span>
-            <img class="modal-content" id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
+            <img style="margin: auto;display: block;width: 80%;max-width: 700px;" id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
             <p id="captionmodal" style="text-align:center"></p>
-            <button class="modal-content" id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 1010px;width: 360px;top: 100px;left: 50%"></button>
+            <button id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 1010px;width: 360px;top: 100px;left: 50%"></button>
             <br><br><br><br><br><br><br>
         </div>
     </div>
@@ -85,6 +90,9 @@
     var max_height = 230;
     var max_width = 230;
     var pg = 0
+    var zoomindex = settings.doujinshi.zoomindex
+    if (settings.doujinshi.zoomindex > 500) {zoomindex = 500}
+    if (settings.doujinshi.zoomindex < 25) {zoomindex = 25}
 
     // read all folder show them with title and first page
     fs.readdirSync("doujinshi").forEach(file => {
@@ -158,5 +166,25 @@
             pg = doujinshiarray.length-1
         }
         modalImg.src = "../doujinshi/"+title+"/"+doujinshiarray[page];
+    }
+
+    var zoompercent = document.getElementById("zoompercent")
+    zoompercent.innerHTML = zoomindex+"%"
+    modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
+
+    function zoomout() {
+        if (zoomindex == 100 || zoomindex == 87.5 || zoomindex == 112.5 || zoomindex == 125 || zoomindex == 62.5 || zoomindex == 75 || zoomindex == 50 || zoomindex == 37.5) {zoomindex-=12.5}
+        else if (zoomindex == 25) {zoomindex=25}
+        else {zoomindex-=25}
+        modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
+        zoompercent.innerHTML = zoomindex+"%"
+    }
+
+    function zoomin() {
+        if (zoomindex == 100 || zoomindex == 87.5 || zoomindex == 112.5 || zoomindex == 75 || zoomindex == 62.5 || zoomindex == 50 || zoomindex == 37.5 || zoomindex == 25) {zoomindex+=12.5}
+        else if (zoomindex == 500) {zoomindex=500}
+        else {zoomindex+=25}
+        modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px";
+        zoompercent.innerHTML = zoomindex+"%"
     }
 </script>
