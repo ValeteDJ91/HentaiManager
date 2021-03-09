@@ -62,10 +62,15 @@
         </div>
         <!--DOUJINSHI MODAL/ZOOM-->
         <div id="doujinshimodal" class="modal" style="margin-bottom: 30px;">
-            <div style="vertical-align: middle;position: relative;top: -34px;left: 85px;">
+            <div style="vertical-align: middle;position: relative;top: -32px;left: 85px;">
                 <img src="../img/zoomout.png" style="width: 27px;display:inline-block;vertical-align: middle;" onclick="zoomout()">
                 <p id="zoompercent" style="display:inline-block;color: #d1d1d1;font-size: 17px;vertical-align: middle;">100%</p>
                 <img src="../img/zoomin.png" style="width: 27px;display:inline-block;vertical-align: middle;" onclick="zoomin()">
+            </div>
+            <div style="vertical-align: middle;position: absolute;top: 13px;left: 50%;">
+                <p style="text-align: center;font-size:20px;display:inline-block" id="pageview1"></p>
+                <p style="text-align: center;font-size:20px;display:inline-block">/</p>
+                <p style="text-align: center;font-size:20px;display:inline-block" id="pageview2"></p>
             </div>
             <span class="close">&times;</span>
             <img style="margin: auto;display: block;width: 80%;max-width: 700px;" id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
@@ -166,6 +171,8 @@
             pg = doujinshiarray.length-1
         }
         modalImg.src = "../doujinshi/"+title+"/"+doujinshiarray[page];
+        document.getElementById("pageview1").innerHTML = page
+        document.getElementById("pageview2").innerHTML = doujinshiarray.length-1
     }
 
     var zoompercent = document.getElementById("zoompercent")

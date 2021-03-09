@@ -55,13 +55,24 @@
             </li>  
         </ul>
     </nav>
-    <div id="main" style="margin-left: 75px;margin-top: 15px;margin-right: 15px;">
-        <div class="card border-primary mb-3" style="max-width: 20rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h4 class="card-title">Primary card title</h4>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+    <div id="main" style="margin-left: 75px;margin-top: 30px;margin-right: 5px;">
+        <div class="dashpanel">
+            <h1 style="margin-bottom: -15px;margin-top: 10px;margin-left: 15px;font-size:40px;text-decoration: underline;">Images stats</h1>
+            <a class="textdash1" id="imagesize">0</a>
+            <a class="textdash3" id="imagenumber">0 Images</a>
+        </div>
+        <div class="dashpanel">
+            <h1 style="margin-bottom: -15px;margin-top: 10px;margin-left: 15px;font-size:40px;text-decoration: underline;">Doujinshi stats</h1>
+            <a class="textdash1" id="doujinshisize">0</a>
+            <a class="textdash3" id="doujinshinumber">0 Doujinshis</a>
+            <a class="textdash3" id="doujinshipagenumber">• 0 Pages</a>
+        </div>
+        <div class="dashpanel" style="margin-right: 0.5%">
+            <h1 style="margin-bottom: -15px;margin-top: 10px;margin-left: 15px;font-size:40px;text-decoration: underline;">Download stats</h1>
+            <a class="textdash1" id="dowloadedsize">0</a>
+            <a class="textdash3" id="dowloadedimagenumber">0 Images</a>
+            <a class="textdash3" id="dowloadeddoujinshinumber">0 Doujinshis</a>
+            <a class="textdash3" id="dowloadeddoujinshipagenumber">• 0 Pages</a>
         </div>
     </div>
 </body>
@@ -69,6 +80,94 @@
 
 <script>
     const settings = require('./data/settings.json');
-
     document.getElementById("title").innerHTML = settings.version
+
+    const fs = require('fs');
+
+    var imgarray = [];
+    var doujarray = [];
+    var doujpgarray = [];
+    var doujpgarraynow = [];
+    var doujpgarraylonger = [];
+    var filearrayimg = [];
+    var folderarraydouj = [];
+    var folderarraydoujin = [];
+    var imgsize = 0
+    var imgsizeb = 0
+    var doujsize = 0
+    var doujsizeb = 0
+    var longername
+    var i = 0
+    var p = 0
+    var a = 0
+    var q = 0
+
+    fs.readdirSync("./image").forEach(file => {
+        imgarray.push(file);
+    });
+    fs.readdirSync("./doujinshi").forEach(file => {
+        doujarray.push(file);
+    });
+    while (i < doujarray.length) {
+        fs.readdirSync("./doujinshi/"+doujarray[i]).forEach(file => {
+            doujpgarray.push(file);
+            doujpgarraynow.push(file);
+        });
+        if (doujpgarraynow.length > doujpgarraylonger.length) {doujpgarraylonger = doujpgarraynow; longername = doujarray[i]}
+        doujpgarraynow = [];
+        i++
+    }
+    console.log("Longer doujinshi: "+longername)
+    console.log("With a total of: "+doujpgarraylonger.length+" pages")
+
+    document.getElementById("imagenumber").innerHTML = imgarray.length+" Images"
+    document.getElementById("doujinshinumber").innerHTML = doujarray.length+" Doujinshis"
+    document.getElementById("doujinshipagenumber").innerHTML = "• "+doujpgarray.length+" Pages"
+
+    if (settings.general.recalcul == 1 || settings.general.imgfoldsize == 0 || settings.general.doujfoldsize == 0) {
+        // image
+        fs.readdirSync("./image").forEach(file => {
+            filearrayimg.push(file);
+        });
+        while (p < filearrayimg.length) {
+            imgsizeb += fs.statSync("./image/"+filearrayimg[p]).size
+            p++
+        }
+        imgsize = btoo(imgsizeb)
+        document.getElementById("imagesize").innerHTML = imgsize;
+        // doujinshi
+        fs.readdirSync("./doujinshi").forEach(file => {
+            folderarraydouj.push(file);
+        });
+        while (a < folderarraydouj.length) {
+            folderarraydoujin = [];
+            fs.readdirSync("./doujinshi/"+folderarraydouj[a]).forEach(file => {
+                folderarraydoujin.push(file);
+            });
+            while (q < folderarraydoujin.length) {
+                doujsizeb += fs.statSync("./doujinshi/"+folderarraydouj[a]+"/"+folderarraydoujin[q]).size
+                q++
+            }
+            a++
+        }
+        doujsize = btoo(doujsizeb)
+        document.getElementById("doujinshisize").innerHTML = doujsize;
+        
+
+        settings.general.imgfoldsize = imgsize;
+        settings.general.doujfoldsize = doujsize;
+        var jsonoutput = JSON.stringify(settings);
+        fs.writeFile('data/settings.json', jsonoutput, function (err) {
+            if (err) throw err;
+        })
+    }
+    else {document.getElementById("imagesize").innerHTML = settings.general.imgfoldsize;document.getElementById("doujinshisize").innerHTML = settings.general.doujfoldsize}
+    function btoo(size) {
+        if (size > 1099511627776) {size = size/1099511627776;size = size.toFixed(2);size = size+"To"}
+        else if (size > 1073741824) {size = size/1073741824;size = size.toFixed(2);size = size+"Go"}
+        else if (size > 1048576) {size = size/1048576;size = size.toFixed(2);size = size+"Mo"}
+        else if (size > 1024) {size = size/1024;size = size.toFixed(2);size = size+"Ko"}
+        else {size = size+"o"}
+        return size
+    }
 </script>
