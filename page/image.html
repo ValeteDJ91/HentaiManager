@@ -94,14 +94,15 @@
     var new_width;
     var new_height;
     var slider = document.getElementById("sizeslider");
-    var imgerrordir = "image/Image_errors";
+    var imgerrordir = settings.image.folder+"/Image_errors";
     var imgtoload = settings.image.imgloadfirst
     var imgtoloadscroll = settings.image.imgloadscroll
+    var imgtoloadtt
     if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgsize)}
 
 
     //find all imgs and create <img> with src
-    fs.readdirSync("image").forEach(file => {
+    fs.readdirSync(settings.image.folder).forEach(file => {
         filearray.push(file);
     });
     var imagezone = document.getElementById("imagezone");
@@ -111,14 +112,14 @@
         while (i < filearray.length && z < toload) {
             if (filearray[i].includes(".png")||filearray[i].includes(".jpg")||filearray[i].includes(".jpeg")||filearray[i].includes(".gif")) {
                 try{
-                    var imgsize = sizeOf("image/"+filearray[i])
+                    var imgsize = sizeOf(settings.image.folder+"/"+filearray[i])
                     var img = document.createElement("img");
-                    img.src = "../image/"+filearray[i];
+                    img.src = settings.image.folder+"/"+filearray[i];
                     imagezone.appendChild(img);
                     img.id = "img"+i
                     img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px;vertical-align: middle;`
                     img.alt = `${filearray[i]}`
-                    img.setAttribute('onclick',"modal.style.display = 'block'; modalImg.src = this.src; captionText.innerHTML = this.alt;")
+                    img.setAttribute('onclick',`modal.style.display = 'block'; modalImg.src = this.src; captionText.innerHTML = this.alt;`)
                     if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
                     {
                         ratio = max_height[slider.value] / img.height;
@@ -135,12 +136,12 @@
                     if(slider.value <= 2) { img.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-left: 4px;margin-top: 2px;vertical-align: middle;` }
                 } catch(error) {
                     console.error(error);
-                    console.error("Problem loading image: image/"+filearray[i]);
+                    console.error("Problem loading image: "+settings.image.folder+"/"+filearray[i]);
                     if (!fs.existsSync(imgerrordir)){
                         fs.mkdirSync(imgerrordir);
                         console.log("Corrupt/Error image folder successfully created")
                     }
-                    fs.rename("image/"+filearray[i], imgerrordir+"/"+filearray[i], (err) => {
+                    fs.rename(settings.image.folder+"/"+filearray[i], imgerrordir+"/"+filearray[i], (err) => {
                     if (err) { console.error(err); };
                     });
                     console.log('Corrupt/Error image moved successfully');
@@ -149,6 +150,7 @@
             i++
             z++
         }
+        imgtoloadtt += toload
     }
     loadimage(imgtoload)
 
@@ -162,9 +164,9 @@
     //slider img size
     slider.oninput = function() {
         var j = 0;
-        while (j !== filearray.length && j < imgtoload) {
+        while (j !== filearray.length && j < imgtoloadtt) {
             var img = document.getElementById("img"+j);
-            var imgsize = sizeOf("image/"+filearray[j])
+            var imgsize = sizeOf(settings.image.folder+"/"+filearray[j])
             img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px`
             if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
             {

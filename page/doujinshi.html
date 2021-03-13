@@ -61,22 +61,51 @@
 
         </div>
         <!--DOUJINSHI MODAL/ZOOM-->
-        <div id="doujinshimodal" class="modal" style="margin-bottom: 30px;">
-            <div style="vertical-align: middle;position: relative;top: -32px;left: 85px;">
-                <img src="../img/zoomout.png" style="width: 27px;display:inline-block;vertical-align: middle;" onclick="zoomout()">
-                <p id="zoompercent" style="display:inline-block;color: #d1d1d1;font-size: 17px;vertical-align: middle;">100%</p>
-                <img src="../img/zoomin.png" style="width: 27px;display:inline-block;vertical-align: middle;" onclick="zoomin()">
+        <div id="doujinshimodal" class="modal">
+            <div style="background-color:#2b2b2bbb;width: 100%;text-align: left;vertical-align: middle;padding : 10px;">
+                <div style="width: 100%">
+                    <p id="doujinshititle" style="margin-left:16%;color: #e0e0e0;margin-top: 10px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Title: </p>
+                    <input id="edittitle" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/pencil.png" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="document.getElementById('doujinshititle').innerHTML='Title: ';document.getElementById('edittitle').style.display=''">
+                </div>
+                <div style="width: 100%">
+                    <p id="doujinshiartist" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Artist: </p>
+                    <input id="editartist" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/pencil.png" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="document.getElementById('doujinshiartist').innerHTML='Artist: ';document.getElementById('editartist').style.display=''">
+                </div>
+                <div style="width: 100%">
+                    <p id="doujinshitag" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Tag: </p>
+                    <div id="showtag" style="display:inline-block"></div>
+                    <input id="addtag" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/done.png" id="addtagv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addtag()">
+                    <img src="../img/pencil.png" id="tageditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittag()">
+                </div>
+                <div style="width: 100%">
+                    <p id="doujinshicharacter" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Character: </p>
+                    <img src="../img/pencil.png" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;">
+                </div>
+                <div style="width: 100%">
+                    <p id="doujinshidate" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Date: </p>
+                    <img src="../img/pencil.png" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;">
+                </div>
             </div>
-            <div style="vertical-align: middle;position: absolute;top: 13px;left: 50%;">
-                <p style="text-align: center;font-size:20px;display:inline-block" id="pageview1"></p>
-                <p style="text-align: center;font-size:20px;display:inline-block">/</p>
-                <p style="text-align: center;font-size:20px;display:inline-block" id="pageview2"></p>
+            <div style="position: relative;background-color:#2b2b2b75;margin-top: 0px;margin-bottom: 20px;">
+                <div style="vertical-align: middle;position: relative;top: 0px;left: 85px;">
+                    <img src="../img/zoomout.png" style="width: 27px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="zoomout()">
+                    <p id="zoompercent" style="display:inline-block;color: #d1d1d1;font-size: 17px;vertical-align: middle;">100%</p>
+                    <img src="../img/zoomin.png" style="width: 27px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="zoomin()">
+                </div>
+                <div style="vertical-align: middle;position: absolute;top: -5px;left: 50%;">
+                    <p style="text-align: center;font-size:20px;display:inline-block" id="pageview1"></p>
+                    <p style="text-align: center;font-size:20px;display:inline-block">/</p>
+                    <p style="text-align: center;font-size:20px;display:inline-block" id="pageview2"></p>
+                </div>
+                <span class="close">&times;</span>
             </div>
-            <span class="close">&times;</span>
             <img style="margin: auto;display: block;width: 80%;max-width: 700px;" id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
             <p id="captionmodal" style="text-align:center"></p>
-            <button id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 1010px;width: 360px;top: 100px;left: 50%"></button>
-            <br><br><br><br><br><br><br>
+            <button id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 1010px;width: 360px;top: 220px;left: 50%"></button>
+            <br><br>
         </div>
     </div>
 </body>
@@ -88,37 +117,52 @@
 
     const fs = require('fs');
     const sizeOf = require('image-size');
-    sizeOf.setConcurrency(100000000)
+    sizeOf.setConcurrency(100000000);
     var doujinshiarray = [];
     var folderarray = [];
     var i = 0;
+    var j = 0;
+    var x = 0;
     var max_height = 230;
     var max_width = 230;
-    var pg = 0
-    var zoomindex = settings.doujinshi.zoomindex
-    if (settings.doujinshi.zoomindex > 500) {zoomindex = 500}
-    if (settings.doujinshi.zoomindex < 25) {zoomindex = 25}
+    var pg = 0;
+    var doujinshiinfo
+    var doujinshiinfoindex
+    var doujinshiinfotesttag
+    var zoomindex = settings.doujinshi.zoomindex;
+    var doujinshi = require('../data/doujinshi.json');
+    var tagcross = document.getElementsByClassName('tagcross');
+    if (settings.doujinshi.zoomindex > 500) {zoomindex = 500};
+    if (settings.doujinshi.zoomindex < 25) {zoomindex = 25};
 
     // read all folder show them with title and first page
-    fs.readdirSync("doujinshi").forEach(file => {
+    fs.readdirSync(settings.doujinshi.folder).forEach(file => {
         folderarray.push(file);
     });
     var doujinshizone = document.getElementById("doujinshizone");
     if (folderarray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";doujinshizone.appendChild(nfa);nfa.innerHTML = "No doujinshi found ;(";}
-    while(i < folderarray.length) {
+    function loaddoujinshi(toload){
+        var z = 0;
+        while(i < folderarray.length && z < toload) {
         doujinshiarray = [];
-        fs.readdirSync("doujinshi/"+folderarray[i]).forEach(file => {
+        fs.readdirSync(settings.doujinshi.folder+"/"+folderarray[i]).forEach(file => {
             doujinshiarray.push(file);
         });
         if (doujinshiarray.length !== 0){
-            var previewsize = sizeOf("doujinshi/"+folderarray[i]+"/"+doujinshiarray[0])
+            var previewsize = sizeOf(settings.doujinshi.folder+"/"+folderarray[i]+"/"+doujinshiarray[0])
             var previewcontainer = document.createElement("div");
             var preview = document.createElement("img");
             var title = document.createElement("p");
-            preview.src = "../doujinshi/"+folderarray[i]+"/"+doujinshiarray[0];
+            preview.src = settings.doujinshi.folder+"/"+folderarray[i]+"/"+doujinshiarray[0];
             preview.style = `height: ${previewsize.height}px; width: ${previewsize.width}px`
-            title.innerHTML = folderarray[i]
-            previewcontainer.alt = folderarray[i]
+            doujinshiinfo = doujinshi.find( ({ folder }) => folder === folderarray[i] );
+            if (!doujinshiinfo) {
+                title.innerHTML = folderarray[i]
+                previewcontainer.alt = folderarray[i]
+            } else {
+                title.innerHTML = doujinshiinfo.name
+                previewcontainer.alt = doujinshiinfo.name
+            }
             previewcontainer.id = "contdoujinshi"+i
             title.style = `margin: 6px;font-size: 13px;`
             previewcontainer.appendChild(preview);
@@ -138,10 +182,20 @@
                 new_width = preview.width * ratio;
             }
             preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
-            previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;`
+            previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;cursor: pointer;`
         }
         i++;
+        z++;
+        }
     }
+    loaddoujinshi(settings.doujinshi.doujloadfirst)
+
+    // load more doujinshi on scroll
+    document.body.addEventListener('scroll',()=>{
+        if (document.body.scrollTop+3500 > document.body.scrollHeight) {
+            loaddoujinshi(settings.doujinshi.doujloadscroll)
+        }
+    })
 
     //modal/zoom
     var modal = document.getElementById("doujinshimodal");
@@ -158,8 +212,14 @@
     }
 
     function viewdoujinshi(page, title) {
+        doujinshiinfo = 0
+        document.getElementById("showtag").innerHTML = ""
+        document.getElementById('edittitle').style.display='none'
+        document.getElementById('editartist').style.display='none'
+        edittagoff()
+        doujinshi = require('../data/doujinshi.json');
         doujinshiarray = [];
-        fs.readdirSync("doujinshi/"+title).forEach(file => {
+        fs.readdirSync(settings.doujinshi.folder+"/"+title).forEach(file => {
             doujinshiarray.push(file);
         });
         if (page >= doujinshiarray.length) {
@@ -170,10 +230,129 @@
             page = doujinshiarray.length-1
             pg = doujinshiarray.length-1
         }
-        modalImg.src = "../doujinshi/"+title+"/"+doujinshiarray[page];
-        document.getElementById("pageview1").innerHTML = page
-        document.getElementById("pageview2").innerHTML = doujinshiarray.length-1
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === title );
+        if (!doujinshiinfo || doujinshiinfo == 0) {
+            document.getElementById("doujinshititle").innerHTML = "Title: "+title
+            document.getElementById('edittitle').value = title
+            document.getElementById("doujinshiartist").innerHTML = "Artist: "
+            document.getElementById("doujinshicharacter").innerHTML = "Character: "
+            document.getElementById("doujinshidate").innerHTML = "Date: "
+            doujinshi.push({"folder":title,"name":title,"artist":"","tag":[],"date":"","character":[]})
+            var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+            fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        } else {
+            document.getElementById("doujinshititle").innerHTML = "Title: "+doujinshiinfo.name
+            document.getElementById('edittitle').value = doujinshiinfo.name
+            document.getElementById("doujinshiartist").innerHTML = "Artist: "+doujinshiinfo.artist
+            document.getElementById('editartist').value = doujinshiinfo.artist
+            document.getElementById("doujinshicharacter").innerHTML = "Character: "+doujinshiinfo.character
+            document.getElementById("doujinshidate").innerHTML = "Date: "+doujinshiinfo.date
+            j = 0
+            while (j < doujinshiinfo.tag.length) {
+                var showtag = document.getElementById("showtag");
+                var tag = document.createElement("a");
+                var tagremove = document.createElement("span");
+                tagremove.innerHTML = "X"
+                tagremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: none;cursor: pointer;"
+                tagremove.className = "tagcross"
+                tag.id = "tagcross"+j
+                tagremove.setAttribute('onclick',`removetag("${title}", "${doujinshiinfo.tag[j]}");this.remove();document.getElementById("tagcross${j}").remove();`)
+                tag.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
+                tag.innerHTML = doujinshiinfo.tag[j]
+                tag.appendChild(tagremove)
+                showtag.appendChild(tag)
+                j++
+            }
+        }
+        modalImg.src = settings.doujinshi.folder+"/"+title+"/"+doujinshiarray[page];
+        document.getElementById("pageview1").innerHTML = page+1
+        document.getElementById("pageview2").innerHTML = doujinshiarray.length
     }
+
+    function updatedate(titled, value) {
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshi[doujinshiinfoindex].date = value
+        var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+        fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+    }
+
+    function addtag() {
+        var value = document.getElementById("addtag").value
+        if (value) {
+            var showtag = document.getElementById("showtag");
+            var tag = document.createElement("a");
+            var tagremove = document.createElement("span");
+            titled = document.getElementById("modaldoujinshi").alt
+            tagremove.innerHTML = "X"
+            tagremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: inline-block;cursor: pointer;"
+            tagremove.className = "tagcross"
+            tag.id = "tagcross"+j
+            tagremove.setAttribute('onclick',`removetag("${titled}", "${value}");this.remove();document.getElementById("tagcross${j}").remove();`)
+            tag.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
+            tag.innerHTML = value
+            tag.appendChild(tagremove)
+            showtag.appendChild(tag)
+            document.getElementById("addtag").value = ""
+            doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+            doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+            doujinshiinfotesttag = doujinshi[doujinshiinfoindex].tag.indexOf(value)
+            if (doujinshiinfotesttag < 0) {
+                doujinshi[doujinshiinfoindex].tag.push(value)
+                var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+                fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+            }
+        }
+    }
+
+    function removetag(titled, value) {
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshiinfotesttag = doujinshi[doujinshiinfoindex].tag.indexOf(value)
+        if (doujinshiinfotesttag > -1) {
+            doujinshi[doujinshiinfoindex].tag.splice(doujinshiinfotesttag, 1)
+            var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+            fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        }
+    }
+
+    function edittag() {
+        x = 0;
+        while (x < tagcross.length) {tagcross[x].style.display='inline-block';x++};
+        document.getElementById("addtag").style.display='inline-block';
+        document.getElementById("addtagv").style.display='inline-block';
+        document.getElementById("tageditpencil").setAttribute('onclick',`edittagoff()`)
+    }
+
+    function edittagoff() {
+        x = 0;
+        while (x < tagcross.length) {tagcross[x].style.display='none';x++};
+        document.getElementById("addtag").style.display='none';
+        document.getElementById("addtagv").style.display='none';
+        document.getElementById("tageditpencil").setAttribute('onclick',`edittag()`)
+    }
+
+    document.getElementById("edittitle").addEventListener('change', (updateValue) => {
+        titled = document.getElementById("modaldoujinshi").alt
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshi[doujinshiinfoindex].name = event.target.value
+        var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+        fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('edittitle').style.display='none'
+        document.getElementById("doujinshititle").innerHTML = "Title: "+doujinshi[doujinshiinfoindex].name
+    });
+
+    document.getElementById("editartist").addEventListener('change', (updateValue) => {
+        titled = document.getElementById("modaldoujinshi").alt
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshi[doujinshiinfoindex].artist = event.target.value
+        var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+        fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('editartist').style.display='none'
+        document.getElementById("doujinshiartist").innerHTML = "Artist: "+doujinshi[doujinshiinfoindex].artist
+    });
 
     var zoompercent = document.getElementById("zoompercent")
     zoompercent.innerHTML = zoomindex+"%"

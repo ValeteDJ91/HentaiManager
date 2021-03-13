@@ -102,14 +102,36 @@
     var a = 0
     var q = 0
 
-    fs.readdirSync("./image").forEach(file => {
+    // set default settings
+    if (settings.image.folder == 0 || settings.doujinshi.folder == 0) {
+        var home = require("os").homedir();
+        var hmpath = home + "/Documents/HentaiManager";
+        var imgpath = home + "/Documents/HentaiManager/image";
+        var doujpath = home + "/Documents/HentaiManager/doujinshi";
+        settings.image.folder = imgpath
+        settings.doujinshi.folder = doujpath
+        try {
+            fs.mkdirSync(hmpath);
+            fs.mkdirSync(imgpath);
+            fs.mkdirSync(doujpath);
+            console.log("hentaifolder created")
+        } catch (e) {
+            console.error("settings.image.folder was 0 but the folder was already created");
+        }
+        var jsonoutput = JSON.stringify(settings, null, '\t');
+        fs.writeFile('data/settings.json', jsonoutput, function (err) {
+            if (err) throw err;
+        })
+    }
+
+    fs.readdirSync(settings.image.folder).forEach(file => {
         imgarray.push(file);
     });
-    fs.readdirSync("./doujinshi").forEach(file => {
+    fs.readdirSync(settings.doujinshi.folder).forEach(file => {
         doujarray.push(file);
     });
     while (i < doujarray.length) {
-        fs.readdirSync("./doujinshi/"+doujarray[i]).forEach(file => {
+        fs.readdirSync(settings.doujinshi.folder+"/"+doujarray[i]).forEach(file => {
             doujpgarray.push(file);
             doujpgarraynow.push(file);
         });
@@ -126,26 +148,21 @@
 
     if (settings.general.recalcul == 1 || settings.general.imgfoldsize == 0 || settings.general.doujfoldsize == 0) {
         // image
-        fs.readdirSync("./image").forEach(file => {
-            filearrayimg.push(file);
-        });
-        while (p < filearrayimg.length) {
-            imgsizeb += fs.statSync("./image/"+filearrayimg[p]).size
+        while (p < imgarray.length) {
+            imgsizeb += fs.statSync(settings.image.folder+"/"+imgarray[p]).size
             p++
         }
         imgsize = btoo(imgsizeb)
         document.getElementById("imagesize").innerHTML = imgsize;
         // doujinshi
-        fs.readdirSync("./doujinshi").forEach(file => {
-            folderarraydouj.push(file);
-        });
-        while (a < folderarraydouj.length) {
+        while (a < doujarray.length) {
+            q = 0
             folderarraydoujin = [];
-            fs.readdirSync("./doujinshi/"+folderarraydouj[a]).forEach(file => {
+            fs.readdirSync(settings.doujinshi.folder+"/"+doujarray[a]).forEach(file => {
                 folderarraydoujin.push(file);
             });
             while (q < folderarraydoujin.length) {
-                doujsizeb += fs.statSync("./doujinshi/"+folderarraydouj[a]+"/"+folderarraydoujin[q]).size
+                doujsizeb += fs.statSync(settings.doujinshi.folder+"/"+doujarray[a]+"/"+folderarraydoujin[q]).size
                 q++
             }
             a++
@@ -156,7 +173,7 @@
 
         settings.general.imgfoldsize = imgsize;
         settings.general.doujfoldsize = doujsize;
-        var jsonoutput = JSON.stringify(settings);
+        var jsonoutput = JSON.stringify(settings, null, '\t');
         fs.writeFile('data/settings.json', jsonoutput, function (err) {
             if (err) throw err;
         })
@@ -170,4 +187,5 @@
         else {size = size+"o"}
         return size
     }
+
 </script>

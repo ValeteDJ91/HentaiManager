@@ -60,19 +60,27 @@
         <div style="margin-left:25px;margin-top: 13px">
             <div>
                 <a style="color:#ffffff">Recalcul folder size (The more img you have the longer it will take 1s/10Go): </a>
-                <button style="vertical-align:middle; border-radius: 0;" onclick="fullrecalcul()">recalcul</button>
+                <button style="vertical-align:middle; border-radius: 0;" onclick="fullrecalcul()">RECALCUL</button>
                 <a style="color:#199c0d;font-size:20px;vertical-align:middle;" id="recalculfinished"></a>
             </div>
             <div style="vertical-align: middle; margin-top: 13px;">
                 <a style="color:#ffffff">Recalcul folders size evry time:</a>
                 <input type="checkbox" id="recalcul" style="vertical-align:middle">
             </div>
+            <div style="vertical-align: middle; margin-top: 13px;">
+                <a style="color:#ffffff">Reset settings to default options: </a>
+                <button style="vertical-align:middle; border-radius: 0;" onclick="optionreset()">RESET</button>
+            </div>
+            <div style="vertical-align: middle; margin-top: 13px;">
+                <a style="color:#ffffff">Reset json data to default: (This will reset all doujinshi/image informations)</a>
+                <button style="vertical-align:middle; border-radius: 0;" onclick="jsonreset()">RESET</button>
+            </div>
         </div>
         <h2>Image</h2><hr>
         <div style="margin-left:25px;margin-top: 13px">
             <div>
                 <label for="imgfoldloc" style="color:#ffffff;">Image folder location:  </label>
-                <input id="imgfoldloc" value="" style="color:#000000;width: 300px;height: 17px;">
+                <input id="imgfoldloc" value="" style="color:#000000;width: 400px;height: 17px;">
             </div>
             <div style="margin-top: 13px;">
                 <a style="color:#ffffff">Image default size: </a>
@@ -81,12 +89,12 @@
             </div>
             <div style="margin-top: 13px;">
                 <label for="imgloadfirst" style="color:#ffffff;">How many image will load:  </label>
-                <input id="imgloadfirst" value="" style="color:#000000;width: 300px;height: 17px;">
+                <input id="imgloadfirst" value="" style="color:#000000;width: 80px;height: 17px;">
                 <a style="color:#ffffff">(the higher it is the longer the page will take to load)</a>
             </div>
             <div style="margin-top: 13px;">
                 <label for="imgloadscroll" style="color:#ffffff;">How many image will load after scrolling (infinite scroll):  </label>
-                <input id="imgloadscroll" value="" style="color:#000000;width: 300px;height: 17px;">
+                <input id="imgloadscroll" value="" style="color:#000000;width: 80px;height: 17px;">
                 <a style="color:#ffffff">(if it s too high you might have to wait before scrolling more)</a>
             </div>
         </div>
@@ -94,12 +102,22 @@
         <div style="margin-left:25px;margin-top: 13px">
             <div>
                 <label for="doujinshifoldloc" style="color:#ffffff;">Doujinshi folder location: </label>
-                <input id="doujinshifoldloc" value="" style="color:#000000;width: 300px;height: 17px;">
+                <input id="doujinshifoldloc" value="" style="color:#000000;width: 400px;height: 17px;">
             </div>
             <div style="margin-top: 13px;">
                 <a style="color:#ffffff">Doujinshi default size when zoom in: </a>
                 <input type="range" min="0" max="23" value="12" class="slider" id="doujsizeslider" style="vertical-align: middle;width: 200px">
                 <a id="doujslidervaluetext" style="color:#ffffff"></a>
+            </div>
+            <div style="margin-top: 13px;">
+                <label for="doujloadfirst" style="color:#ffffff;">How many doujinshi will load:  </label>
+                <input id="doujloadfirst" value="" style="color:#000000;width: 80px;height: 17px;">
+                <a style="color:#ffffff">(the higher it is the longer the page will take to load)</a>
+            </div>
+            <div style="margin-top: 13px;">
+                <label for="doujloadscroll" style="color:#ffffff;">How many doujinshi will load after scrolling (infinite scroll):  </label>
+                <input id="doujloadscroll" value="" style="color:#000000;width: 80px;height: 17px;">
+                <a style="color:#ffffff">(if it s too high you might have to wait before scrolling more)</a>
             </div>
         </div>
         <a style="color:#199c0d;font-size:20px;" id="saved"></a>
@@ -120,6 +138,8 @@ var imgloadfirst = document.getElementById("imgloadfirst");
 var imgloadscroll = document.getElementById("imgloadscroll");
 var doujinshifoldloc = document.getElementById("doujinshifoldloc");
 var doujsizeslider = document.getElementById("doujsizeslider");
+var doujloadfirst = document.getElementById("doujloadfirst");
+var doujloadscroll = document.getElementById("doujloadscroll");
 var zoomarray = [25, 37.5, 50, 62.5, 75, 87.5, 100, 112.5, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500];
 var filearrayimg = [];
 var folderarraydouj = [];
@@ -129,6 +149,8 @@ var doujsize = 0
 var p = 0
 var a = 0
 var q = 0
+
+// ---------------------------GENERAL-----------------------------------
 
 // set if programm recalcul folder size on openning
 if (settings.general.recalcul == 1) {recalcul.setAttribute('checked',"")}
@@ -141,11 +163,11 @@ recalcul.addEventListener('change', (updateValue) => {
 // recalcule folder size
 function fullrecalcul() {
         // image
-        fs.readdirSync("image").forEach(file => {
+        fs.readdirSync(settings.image.folder).forEach(file => {
             filearrayimg.push(file);
         });
         while (p < filearrayimg.length) {
-            imgsize += fs.statSync("image/"+filearrayimg[p]).size
+            imgsize += fs.statSync(settings.image.folder+"/"+filearrayimg[p]).size
             p++
         }
         if (imgsize > 1099511627776) {imgsize = imgsize/1099511627776;imgsize = imgsize.toFixed(2);imgsize = imgsize+"To"}
@@ -154,16 +176,17 @@ function fullrecalcul() {
         else if (imgsize > 1024) {imgsize = imgsize/1024;imgsize = imgsize.toFixed(2);imgsize = imgsize+"Ko"}
         else {imgsize = imgsize+"o"}
         // doujinshi
-        fs.readdirSync("doujinshi").forEach(file => {
+        fs.readdirSync(settings.doujinshi.folder).forEach(file => {
             folderarraydouj.push(file);
         });
         while (a < folderarraydouj.length) {
+            q = 0
             folderarraydoujin = [];
-            fs.readdirSync("doujinshi/"+folderarraydouj[a]).forEach(file => {
+            fs.readdirSync(settings.doujinshi.folder+"/"+folderarraydouj[a]).forEach(file => {
                 folderarraydoujin.push(file);
             });
             while (q < folderarraydoujin.length) {
-                doujsize += fs.statSync("doujinshi/"+folderarraydouj[a]+"/"+folderarraydoujin[q]).size
+                doujsize += fs.statSync(settings.doujinshi.folder+"/"+folderarraydouj[a]+"/"+folderarraydoujin[q]).size
                 q++
             }
             a++
@@ -177,12 +200,48 @@ function fullrecalcul() {
 
         settings.general.imgfoldsize = imgsize;
         settings.general.doujfoldsize = doujsize;
-        var jsonoutput = JSON.stringify(settings);
+        var jsonoutput = JSON.stringify(settings, null, '\t');
         fs.writeFile('data/settings.json', jsonoutput, function (err) {
             if (err) throw err;
         })
         document.getElementById("recalculfinished").innerHTML = "Full recalcul of folders size finished succesfully!"
     }
+
+// reset options to default
+var home = require("os").homedir();
+var imgpath = home + "/Documents/HentaiManager/image";
+var doujpath = home + "/Documents/HentaiManager/doujinshi";
+
+function optionreset() {
+    settings.general.recalcul = 0
+    settings.general.imgfoldsize = 0
+    settings.general.doujfoldsize = 0
+    settings.image.folder = imgpath
+    settings.image.imgsize = 3
+    settings.image.imgloadfirst = 700
+    settings.image.imgloadscroll = 500
+    settings.doujinshi.folder = doujpath
+    settings.doujinshi.zoomindex = 100
+    settings.doujinshi.doujloadfirst = 80
+    settings.doujinshi.doujloadscroll = 40
+    savesettings()
+    location.reload()
+}
+
+// reset json to default
+var jsonpath = "../data";
+
+function jsonreset() {
+    doujinshi = []
+    var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+    fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+    image = []
+    var jsonoutput = JSON.stringify(image, null, '\t')
+    fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
+    savesettings()
+}
+
+// ---------------------------IMAGE-----------------------------------
 
 // img folder location
 if (settings.image.folder) {imgfoldloc.setAttribute('value',settings.image.folder)}
@@ -203,16 +262,18 @@ imgsizeslider.oninput = function() {
 // img first load
 if (settings.image.imgloadfirst) {imgloadfirst.setAttribute('value',settings.image.imgloadfirst)}
 imgloadfirst.addEventListener('change', (updateValue) => {
-    settings.image.imgloadfirst = event.target.value
+    settings.image.imgloadfirst = parseInt(event.target.value)
     savesettings()
 });
 
 // img load on scrolling
 if (settings.image.imgloadscroll) {imgloadscroll.setAttribute('value',settings.image.imgloadscroll)}
 imgloadscroll.addEventListener('change', (updateValue) => {
-    settings.image.imgloadscroll = event.target.value
+    settings.image.imgloadscroll = parseInt(event.target.value)
     savesettings()
 });
+
+// ---------------------------DOUJINSHI-----------------------------------
 
 // doujinshi folder location
 if (settings.doujinshi.folder) {doujinshifoldloc.setAttribute('value',settings.doujinshi.folder)}
@@ -231,12 +292,27 @@ doujsizeslider.oninput = function() {
     savesettings()
 }
 
+// doujinshi first load
+if (settings.doujinshi.doujloadfirst) {doujloadfirst.setAttribute('value',settings.doujinshi.doujloadfirst)}
+doujloadfirst.addEventListener('change', (updateValue) => {
+    settings.doujinshi.doujloadfirst = parseInt(event.target.value)
+    savesettings()
+});
+
+// doujinshi load on scrolling
+if (settings.doujinshi.doujloadscroll) {doujloadscroll.setAttribute('value',settings.doujinshi.doujloadscroll)}
+doujloadscroll.addEventListener('change', (updateValue) => {
+    settings.doujinshi.doujloadscroll = parseInt(event.target.value)
+    savesettings()
+});
+
 // save changes
 function savesettings(){
-    var jsonoutput = JSON.stringify(settings)
+    var jsonoutput = JSON.stringify(settings, null, '\t')
     fs.writeFile('data/settings.json', jsonoutput, function (err) {
         if (err) throw err;
     });
+    document.getElementById("saved").style.color = "#199c0d"
     document.getElementById("saved").innerHTML = "Settings saved!"
 }
 
