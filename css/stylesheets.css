@@ -9,7 +9,7 @@ body,html {
 }
 p { color:#b3b3b3; }
 h1,h2 { color:  #EBEBEB; }
-@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+
 .fa {
 position: relative;
 display: table-cell;
