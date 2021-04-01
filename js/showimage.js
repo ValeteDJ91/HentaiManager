@@ -10,6 +10,7 @@ var max_height = [1, 40, 75, 130, 230, 400, 600];
 var max_width = [1, 40, 75, 130, 230, 400, 600];
 var new_width;
 var new_height;
+var tagjsonindex
 var slider = document.getElementById("sizeslider");
 var imgerrordir = settings.image.folder+"/Image_errors";
 var imgtoload = settings.image.imgloadfirst
@@ -18,6 +19,9 @@ var imginfo
 var tagcross = document.getElementsByClassName('tagcross');
 var charactercross = document.getElementsByClassName('charactercross');
 var imagegroupcross = document.getElementsByClassName('imagegroupcross');
+var showtag = document.getElementById("showtag");
+var showcharacter = document.getElementById("showcharacter");
+var showimagegroup = document.getElementById("showimagegroup");
 var img = require('../data/image.json')
 if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgsize)}
 
@@ -29,6 +33,7 @@ fs.readdirSync(settings.image.folder).forEach(file => {
 var imagezone = document.getElementById("imagezone");
 if (filearray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";imagezone.appendChild(nfa);nfa.innerHTML = "No images found ;(";}
 function loadimage(toload){
+    document.getElementById("loadinginfo").style.display= "block"
     var z = 0;
     while (i < filearray.length && z < toload) {
         if (filearray[i].includes(".png")||filearray[i].includes(".jpg")||filearray[i].includes(".jpeg")||filearray[i].includes(".gif")) {
@@ -71,6 +76,7 @@ function loadimage(toload){
         i++
         z++
     }
+    document.getElementById("loadinginfo").style.display= "none"
 }
 loadimage(imgtoload)
 
@@ -124,14 +130,37 @@ window.onclick = function(event) {
 function viewimage(title) {
     imginfo = 0
     document.getElementById("showtag").innerHTML = ""
+    document.getElementById("taglist").innerHTML = ""
+    document.getElementById("characterlist").innerHTML = ""
+    document.getElementById("imggrouplist").innerHTML = ""
     document.getElementById("showcharacter").innerHTML = ""
     document.getElementById("showimagegroup").innerHTML = ""
     document.getElementById('edittitle').style.display='none'
     document.getElementById('editartist').style.display='none'
-    edittagoff()
-    editcharacteroff()
-    editimagegroupoff()
     img = require('../data/image.json');
+    tagjson = require('../data/placeholder.json');
+    // add show tag when input
+    m = 0
+    while (m < tagjson.tag.image.length) {
+        var option = document.createElement('option');
+        option.innerHTML = tagjson.tag.image[m]
+        document.getElementById("taglist").appendChild(option)
+        m++
+    }
+    m = 0
+    while (m < tagjson.character.image.length) {
+        var option = document.createElement('option');
+        option.innerHTML = tagjson.character.image[m]
+        document.getElementById("characterlist").appendChild(option)
+        m++
+    }
+    m = 0
+    while (m < tagjson.imggroup.image.length) {
+        var option = document.createElement('option');
+        option.innerHTML = tagjson.imggroup.image[m]
+        document.getElementById("characterlist").appendChild(option)
+        m++
+    }
     // get img info
     imginfo = img.find( ({ file }) => file === title );
     if (!imginfo || imginfo == 0) {
@@ -151,15 +180,13 @@ function viewimage(title) {
         // show all tag
         j = 0
         while (j < imginfo.tag.length) {
-            var showtag = document.getElementById("showtag");
             var tag = document.createElement("a");
             var tagremove = document.createElement("span");
             tagremove.innerHTML = "X"
-            tagremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: none;cursor: pointer;"
             tagremove.className = "tagcross"
             tag.id = "tagcross"+j
             tagremove.setAttribute('onclick',`removetag("${title}", "${imginfo.tag[j]}");this.remove();document.getElementById("tagcross${j}").remove();`)
-            tag.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
+            tag.className = "tagclass"
             tag.innerHTML = imginfo.tag[j]
             tag.appendChild(tagremove)
             showtag.appendChild(tag)
@@ -168,15 +195,13 @@ function viewimage(title) {
         // show all character
         e = 0
         while (e < imginfo.character.length) {
-            var showcharacter = document.getElementById("showcharacter");
             var character = document.createElement("a");
             var characterremove = document.createElement("span");
             characterremove.innerHTML = "X"
-            characterremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: none;cursor: pointer;"
             characterremove.className = "charactercross"
             character.id = "charactercross"+e
             characterremove.setAttribute('onclick',`removecharacter("${title}", "${imginfo.character[e]}");this.remove();document.getElementById("charactercross${e}").remove();`)
-            character.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
+            character.className = "tagclass"
             character.innerHTML = imginfo.character[e]
             character.appendChild(characterremove)
             showcharacter.appendChild(character)
@@ -185,19 +210,29 @@ function viewimage(title) {
         // show all imggroup
         t = 0
         while (t < imginfo.imagegroup.length) {
-            var showimagegroup = document.getElementById("showimagegroup");
             var imagegroup = document.createElement("a");
             var imagegroupremove = document.createElement("span");
             imagegroupremove.innerHTML = "X"
-            imagegroupremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: none;cursor: pointer;"
             imagegroupremove.className = "imagegroupcross"
             imagegroup.id = "imagegroupcross"+t
             imagegroupremove.setAttribute('onclick',`removeimagegroup("${title}", "${imginfo.imagegroup[e]}");this.remove();document.getElementById("charactercross${e}").remove();`)
-            imagegroup.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
+            imagegroup.className = "tagclass"
             imagegroup.innerHTML = imginfo.imagegroup[e]
             imagegroup.appendChild(imagegroupremove)
             showimagegroup.appendChild(imagegroup)
             t++
         }
     }
+    showtag.innerHTML += `
+    <input id="addtag" list="taglist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+    <img src="../img/done.png" id="addtagv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addtag()">
+    <img src="../img/pencil.png" id="tageditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittag()">`
+    showcharacter.innerHTML += `
+    <input id="addcharacter" list="characterlist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+    <img src="../img/done.png" id="addcharacterv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addcharacter()">
+    <img src="../img/pencil.png" id="charactereditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editcharacter()">`
+    showimagegroup.innerHTML += `
+    <input id="addimagegroup" list="imggrouplist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+    <img src="../img/done.png" id="addimagegroupv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addimagegroup()">
+    <img src="../img/pencil.png" id="imagegroupeditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editimagegroup()">`
 }

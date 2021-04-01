@@ -1,3 +1,5 @@
+const { ServerlessApplicationRepository } = require("aws-sdk");
+
 var imgslidervaluetext = ["HOW", "tiny", "small", "normal", "big", "huge", "just click on it at this point"];
 var recalcul = document.getElementById("recalcul");
 var imgfoldloc = document.getElementById("imgfoldloc");
@@ -9,15 +11,11 @@ var doujsizeslider = document.getElementById("doujsizeslider");
 var doujloadfirst = document.getElementById("doujloadfirst");
 var doujloadscroll = document.getElementById("doujloadscroll");
 var scrolltop = document.getElementById("scrolltop");
+var showfull = document.getElementById("showfull");
 var zoomarray = [25, 37.5, 50, 62.5, 75, 87.5, 100, 112.5, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500];
-var filearrayimg = [];
-var folderarraydouj = [];
-var folderarraydoujin = [];
 var imgsize = 0
 var doujsize = 0
-var p = 0
-var a = 0
-var q = 0
+var filet
 
 // ---------------------------GENERAL-----------------------------------
 
@@ -31,46 +29,28 @@ recalcul.addEventListener('change', (updateValue) => {
 
 // recalcule folder size
 function fullrecalcul() {
-        // image
-        fs.readdirSync(settings.image.folder).forEach(file => {
-            filearrayimg.push(file);
+    // image
+    fs.readdirSync(settings.image.folder).forEach(file => {
+        imgsize += fs.statSync(settings.image.folder+"/"+file).size
+    });
+    imgsize = btoo(imgsize)
+    // doujinshi
+    fs.readdirSync(settings.doujinshi.folder).forEach(file => {
+        filet = file
+        fs.readdirSync(settings.doujinshi.folder+"/"+file).forEach(file => {
+            doujsize += fs.statSync(settings.doujinshi.folder+"/"+filet+"/"+file).size
         });
-        while (p < filearrayimg.length) {
-            imgsize += fs.statSync(settings.image.folder+"/"+filearrayimg[p]).size
-            p++
-        }
-        imgsize = btoo(imgsize)
-        // doujinshi
-        fs.readdirSync(settings.doujinshi.folder).forEach(file => {
-            folderarraydouj.push(file);
-        });
-        while (a < folderarraydouj.length) {
-            q = 0
-            folderarraydoujin = [];
-            fs.readdirSync(settings.doujinshi.folder+"/"+folderarraydouj[a]).forEach(file => {
-                folderarraydoujin.push(file);
-            });
-            while (q < folderarraydoujin.length) {
-                doujsize += fs.statSync(settings.doujinshi.folder+"/"+folderarraydouj[a]+"/"+folderarraydoujin[q]).size
-                q++
-            }
-            a++
-        }
-        if (doujsize > 1099511627776) {doujsize = doujsize/1099511627776;doujsize = doujsize.toFixed(2);doujsize = doujsize+"To"}
-        else if (doujsize > 1073741824) {doujsize = doujsize/1073741824;doujsize = doujsize.toFixed(2);doujsize = doujsize+"Go"}
-        else if (doujsize > 1048576) {doujsize = doujsize/1048576;doujsize = doujsize.toFixed(2);doujsize = doujsize+"Mo"}
-        else if (doujsize > 1024) {doujsize = doujsize/1024;doujsize = doujsize.toFixed(2);doujsize = doujsize+"Ko"}
-        else {doujsize = doujsize+"o"}
-        
-
-        settings.general.imgfoldsize = imgsize;
-        settings.general.doujfoldsize = doujsize;
-        var jsonoutput = JSON.stringify(settings, null, '\t');
-        fs.writeFile('data/settings.json', jsonoutput, function (err) {
-            if (err) throw err;
-        })
-        document.getElementById("recalculfinished").innerHTML = "Full recalcul of folders size finished succesfully!"
-    }
+    });
+    doujsize = btoo(doujsize)
+    
+    settings.general.imgfoldsize = imgsize;
+    settings.general.doujfoldsize = doujsize;
+    var jsonoutput = JSON.stringify(settings, null, '\t');
+    fs.writeFile('data/settings.json', jsonoutput, function (err) {
+        if (err) throw err;
+    })
+    document.getElementById("recalculfinished").innerHTML = "Full recalcul of folders size finished succesfully! doujinshi: "+doujsize+" image: "+imgsize
+}
 
 // reset options to default
 var home = require("os").homedir();
@@ -89,6 +69,8 @@ function optionreset() {
     settings.doujinshi.zoomindex = 100
     settings.doujinshi.doujloadfirst = 80
     settings.doujinshi.doujloadscroll = 40
+    settings.doujinshi.scrolltotop = 0
+    settings.doujinshi.showfull = 0
     savesettings()
     location.reload()
 }
@@ -101,9 +83,9 @@ function jsonreset() {
     image = []
     var jsonoutput = JSON.stringify(image, null, '\t')
     fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
-    tag = {"doujinshi":[],"image":[]}
+    tag = {"tag":{"doujinshi": [],"image": []},"character":{"doujinshi": [],"image": []},"imggroup":{"image": []}}
     var jsonoutput = JSON.stringify(tag, null, '\t')
-    fs.writeFile('data/tag.json', jsonoutput, function (err) {if (err) throw err;});
+    fs.writeFile('data/placeholder.json', jsonoutput, function (err) {if (err) throw err;});
     savesettings()
 }
 
@@ -180,7 +162,15 @@ scrolltop.addEventListener('change', (updateValue) => {
     savesettings()
 });
 
-// save changes
+// set if the programm will scroll the doujinshi img to top
+if (settings.doujinshi.showfull == 1) {showfull.setAttribute('checked',"")}
+showfull.addEventListener('change', (updateValue) => {
+    if (settings.doujinshi.showfull == 1) {settings.doujinshi.showfull = 0}
+    else if (settings.doujinshi.showfull == 0) {settings.doujinshi.showfull = 1}
+    savesettings()
+});
+
+// ------------------------------ save changes ------------------------------
 function savesettings(){
     var jsonoutput = JSON.stringify(settings, null, '\t')
     fs.writeFile('data/settings.json', jsonoutput, function (err) {
@@ -188,4 +178,5 @@ function savesettings(){
     });
     document.getElementById("saved").style.color = "#199c0d"
     document.getElementById("saved").innerHTML = "Settings saved!"
+    setTimeout(() => {  document.getElementById("saved").innerHTML = ""; }, 2000);
 }

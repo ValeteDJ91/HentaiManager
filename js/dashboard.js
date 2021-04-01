@@ -56,10 +56,21 @@ while (i < doujarray.length) {
 console.log("Longer doujinshi: "+longername)
 console.log("With a total of: "+doujpgarraylonger.length+" pages")
 
+var jsoninput = fs.readFileSync('data/placeholder.json', 'utf8')
+var tagjson = JSON.parse(jsoninput)
+
+// set image info
 document.getElementById("imagenumber").innerHTML = imgarray.length+" Images"
+document.getElementById("imagetagnumber").innerHTML = tagjson.tag.image.length+" Tags"
+document.getElementById("imagecharacternumber").innerHTML = tagjson.character.image.length+" Characters"
+
+// set doujinshi info
 document.getElementById("doujinshinumber").innerHTML = doujarray.length+" Doujinshis"
 document.getElementById("doujinshipagenumber").innerHTML = "• "+doujpgarray.length+" Pages"
+document.getElementById("doujinshitagnumber").innerHTML = tagjson.tag.doujinshi.length+" Tags"
+document.getElementById("doujinshicharacternumber").innerHTML = tagjson.character.doujinshi.length+" Characters"
 
+// recalcul folder size
 if (settings.general.recalcul == 1 || settings.general.imgfoldsize == 0 || settings.general.doujfoldsize == 0) {
     // image
     while (p < imgarray.length) {
@@ -83,7 +94,7 @@ if (settings.general.recalcul == 1 || settings.general.imgfoldsize == 0 || setti
     }
     doujsize = btoo(doujsizeb)
     document.getElementById("doujinshisize").innerHTML = doujsize;
-    
+
 
     settings.general.imgfoldsize = imgsize;
     settings.general.doujfoldsize = doujsize;

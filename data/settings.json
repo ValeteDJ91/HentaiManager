@@ -2,7 +2,7 @@
 	"general": {
 		"recalcul": 0,
 		"imgfoldsize": "33.80Go",
-		"doujfoldsize": "40.32Go"
+		"doujfoldsize": "41.46Go"
 	},
 	"image": {
 		"folder": "V:\\dev\\HentaiManager/image",
@@ -13,9 +13,10 @@
 	"doujinshi": {
 		"folder": "V:\\dev\\HentaiManager/doujinshi",
 		"zoomindex": 100,
-		"doujloadfirst": "80",
+		"doujloadfirst": 80,
 		"doujloadscroll": 40,
-		"scrolltotop": 0
+		"scrolltotop": 0,
+		"showfull": 0
 	},
-	"version": "Hentai manager v0.0.11"
+	"version": "Hentai manager v0.0.12"
 }

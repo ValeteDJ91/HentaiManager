@@ -43,7 +43,8 @@ function editdateoff() {
 // function used to add a tag
 function addtag() {
     var value = document.getElementById("addtag").value
-    if (value) {
+    var test = testregex.exec(value);
+    if (value && !test) {
         var showtag = document.getElementById("showtag");
         var tag = document.createElement("a");
         var tagremove = document.createElement("span");
@@ -65,6 +66,13 @@ function addtag() {
             doujinshi[doujinshiinfoindex].tag.push(value)
             var jsonoutput = JSON.stringify(doujinshi, null, '\t')
             fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+            tagjson = require('../data/placeholder.json')
+            tagjsonindex = tagjson.tag.doujinshi.indexOf(value)
+            if (tagjsonindex < 0) {
+                tagjson.tag.doujinshi.push(value)
+                var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
+                fs.writeFile('data/placeholder.json', tagjsonoutput, function (err) {if (err) throw err;});
+            }
             j++
         }
     }
@@ -102,7 +110,8 @@ function edittagoff() {
 // function used to add a character
 function addcharacter() {
     var value = document.getElementById("addcharacter").value
-    if (value) {
+    var test = testregex.exec(value);
+    if (value && !test) {
         var showcharacter = document.getElementById("showcharacter");
         var character = document.createElement("a");
         var characterremove = document.createElement("span");
@@ -124,6 +133,13 @@ function addcharacter() {
             doujinshi[doujinshiinfoindex].character.push(value)
             var jsonoutput = JSON.stringify(doujinshi, null, '\t')
             fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+            tagjson = require('../data/placeholder.json')
+            tagjsonindex = tagjson.character.doujinshi.indexOf(value)
+            if (tagjsonindex < 0) {
+                tagjson.character.doujinshi.push(value)
+                var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
+                fs.writeFile('data/placeholder.json', tagjsonoutput, function (err) {if (err) throw err;});
+            }
             e++
         }
     }

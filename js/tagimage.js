@@ -29,7 +29,8 @@ function editartistoff() {
 // function used to add a tag
 function addtag() {
     var value = document.getElementById("addtag").value
-    if (value) {
+    var test = testregex.exec(value);
+    if (value && !test) {
         var showtag = document.getElementById("showtag");
         var tag = document.createElement("a");
         var tagremove = document.createElement("span");
@@ -51,6 +52,13 @@ function addtag() {
             img[imginfoindex].tag.push(value)
             var jsonoutput = JSON.stringify(img, null, '\t')
             fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
+            var tagjson = require('../data/placeholder.json')
+            tagjsonindex = tagjson.tag.image.indexOf(value)
+            if (tagjsonindex < 0) {
+                tagjson.tag.image.push(value)
+                var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
+                fs.writeFile('data/placeholder.json', tagjsonoutput, function (err) {if (err) throw err;});
+            }
             j++
         }
     }
@@ -88,7 +96,8 @@ function edittagoff() {
 // function used to add a character
 function addcharacter() {
     var value = document.getElementById("addcharacter").value
-    if (value) {
+    var test = testregex.exec(value);
+    if (value && !test) {
         var showcharacter = document.getElementById("showcharacter");
         var character = document.createElement("a");
         var characterremove = document.createElement("span");
@@ -110,6 +119,13 @@ function addcharacter() {
             img[imginfoindex].character.push(value)
             var jsonoutput = JSON.stringify(img, null, '\t')
             fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
+            var tagjson = require('../data/placeholder.json')
+            tagjsonindex = tagjson.character.image.indexOf(value)
+            if (tagjsonindex < 0) {
+                tagjson.character.image.push(value)
+                var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
+                fs.writeFile('data/placeholder.json', tagjsonoutput, function (err) {if (err) throw err;});
+            }
             e++
         }
     }
@@ -147,7 +163,8 @@ function editcharacteroff() {
 // function used to add a imagegroup
 function addimagegroup() {
     var value = document.getElementById("addimagegroup").value
-    if (value) {
+    var test = testregex.exec(value);
+    if (value && !test) {
         var showimagegroup = document.getElementById("showimagegroup");
         var imagegroup = document.createElement("a");
         var imagegroupremove = document.createElement("span");
@@ -169,6 +186,13 @@ function addimagegroup() {
             img[imginfoindex].imagegroup.push(value)
             var jsonoutput = JSON.stringify(img, null, '\t')
             fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
+            var tagjson = require('../data/placeholder.json')
+            tagjsonindex = tagjson.imggroup.image.indexOf(value)
+            if (tagjsonindex < 0) {
+                tagjson.imggroup.image.push(value)
+                var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
+                fs.writeFile('data/placeholder.json', tagjsonoutput, function (err) {if (err) throw err;});
+            }
             e++
         }
     }

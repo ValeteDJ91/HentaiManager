@@ -143,13 +143,6 @@ background-color:#747474;
     cursor: pointer; 
 }
 
-#myImg {
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#myImg:hover {opacity: 0.9;}
-
 .modal {
   display: none;
   position: fixed;
@@ -168,22 +161,6 @@ background-color:#747474;
   display: block;
   width: 80%;
   max-width: 700px;
-}
-
-#caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
-}
-
-.modal-content, #caption {
-  animation-name: zoom;
-  animation-duration: 0.2s;
 }
 
 @keyframes zoom {
@@ -215,17 +192,81 @@ background-color:#747474;
 }
 
 .textdash1 {
-  display: inline-block;position: inherit; color:#cacaca; font-size: 50px; margin-left: 30px; margin-top: 20px;
+  display: inline-block;
+  position: inherit; 
+  color:#cacaca; 
+  font-size: 50px; 
+  margin-left: 30px; 
+  margin-top: 20px;
 }
 
 .textdash2 {
-  display: inline-block;position: inherit; color:#cacaca; font-size: 50px; margin-top: 20px;
+  display: inline-block;
+  position: inherit; 
+  color:#cacaca; 
+  font-size: 50px; 
+  margin-top: 20px;
 }
 
 .textdash3 {
-  display: block; color:#cacaca; font-size: 22px; position:inherit; margin-left: 30px;
+  display: block; 
+  color:#cacaca; 
+  font-size: 22px; 
+  position:inherit; 
+  margin-left: 30px;
 }
 
 .dashpanel {
-  display: inline-block;margin-left: 0.5%;border-radius: 5px;background-color: #2b2b2b; width: 32%; vertical-align: top;min-height: 300px
+  display: inline-block;
+  margin-left: 0.5%;
+  border-radius: 5px;
+  background-color: #2b2b2b; 
+  width: 32%; 
+  vertical-align: top;
+  min-height: 300px
+}
+
+.tagclass {
+  color:#e0e0e0;
+  background-color:#000000;
+  border-radius: 5px;
+  margin-right: 6px;
+  display: inline-block;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 4px;
+  padding-right: 4px
+}
+
+.charactercross {
+  color:#ffffff;
+  vertical-align: middle;
+  font-size: 13px;
+  margin-right: 1px;
+  margin-left: 6px;
+  font-weight: bold;
+  display: none;
+  cursor: pointer;
+}
+
+.tagcross {
+  color:#ffffff;
+  vertical-align: middle;
+  font-size: 13px;
+  margin-right: 1px;
+  margin-left: 6px;
+  font-weight: bold;
+  display: none;
+  cursor: pointer;
+}
+
+.imagegroupcross {
+  color:#ffffff;
+  vertical-align: middle;
+  font-size: 13px;
+  margin-right: 1px;
+  margin-left: 6px;
+  font-weight: bold;
+  display: none;
+  cursor: pointer;
 }
