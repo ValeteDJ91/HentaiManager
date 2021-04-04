@@ -1,3 +1,10 @@
+var tagcross = document.getElementsByClassName('tagcross');
+var charactercross = document.getElementsByClassName('charactercross');
+var imagegroupcross = document.getElementsByClassName('imagegroupcross');
+var j = 0;
+var e = 0;
+var o = 0;
+
 // function used to show or hide the text insert for title
 function edittitleon() {
     titlec = document.getElementById('imgtitle').innerHTML
@@ -53,7 +60,7 @@ function addtag() {
             var jsonoutput = JSON.stringify(img, null, '\t')
             fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
             var tagjson = require('../data/placeholder.json')
-            tagjsonindex = tagjson.tag.image.indexOf(value)
+            var tagjsonindex = tagjson.tag.image.indexOf(value)
             if (tagjsonindex < 0) {
                 tagjson.tag.image.push(value)
                 var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
@@ -120,7 +127,7 @@ function addcharacter() {
             var jsonoutput = JSON.stringify(img, null, '\t')
             fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
             var tagjson = require('../data/placeholder.json')
-            tagjsonindex = tagjson.character.image.indexOf(value)
+            var tagjsonindex = tagjson.character.image.indexOf(value)
             if (tagjsonindex < 0) {
                 tagjson.character.image.push(value)
                 var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
@@ -177,7 +184,7 @@ function addimagegroup() {
             imagegroupremove.innerHTML = "X"
             imagegroupremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: inline-block;cursor: pointer;"
             imagegroupremove.className = "imagegroupcross"
-            imagegroup.id = "imagegroupcross"+e
+            imagegroup.id = "imagegroupcross"+o
             imagegroupremove.setAttribute('onclick',`removeimagegroup("${titled}", "${value}");this.remove();document.getElementById("imagegroupcross${e}").remove();`)
             imagegroup.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
             imagegroup.innerHTML = value
@@ -187,13 +194,13 @@ function addimagegroup() {
             var jsonoutput = JSON.stringify(img, null, '\t')
             fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
             var tagjson = require('../data/placeholder.json')
-            tagjsonindex = tagjson.imggroup.image.indexOf(value)
+            var tagjsonindex = tagjson.imggroup.image.indexOf(value)
             if (tagjsonindex < 0) {
                 tagjson.imggroup.image.push(value)
                 var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
                 fs.writeFile('data/placeholder.json', tagjsonoutput, function (err) {if (err) throw err;});
             }
-            e++
+            o++
         }
     }
 }
@@ -229,26 +236,32 @@ function editimagegroupoff() {
 
 // detect if title has been change them save change
 document.getElementById("edittitle").addEventListener('change', (updateValue) => {
-    document.getElementById('edittitlepencil').setAttribute('onclick',`edittitleon()`)
-    titled = document.getElementById("modalimg").alt
-    imginfo = img.find( ({ file }) => file === titled );
-    imginfoindex = img.indexOf(imginfo)
-    img[imginfoindex].quickname = event.target.value
-    var jsonoutput = JSON.stringify(img, null, '\t')
-    fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
-    document.getElementById('edittitle').style.display='none'
-    document.getElementById("imgtitle").innerHTML = "Title: "+img[imginfoindex].quickname
+    var reg = testregex.exec(event.target.value);
+    if (!reg) {
+        document.getElementById('edittitlepencil').setAttribute('onclick',`edittitleon()`)
+        titled = document.getElementById("modalimg").alt
+        imginfo = img.find( ({ file }) => file === titled );
+        imginfoindex = img.indexOf(imginfo)
+        img[imginfoindex].quickname = event.target.value
+        var jsonoutput = JSON.stringify(img, null, '\t')
+        fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('edittitle').style.display='none'
+        document.getElementById("imgtitle").innerHTML = "Title: "+img[imginfoindex].quickname
+    }
 });
 
 // detect if artist has been change them save change
 document.getElementById("editartist").addEventListener('change', (updateValue) => {
-    document.getElementById('editartistpencil').setAttribute('onclick',`editartiston()`)
-    titled = document.getElementById("modalimg").alt
-    imginfo = img.find( ({ file }) => file === titled );
-    imginfoindex = img.indexOf(imginfo)
-    img[imginfoindex].artist = event.target.value
-    var jsonoutput = JSON.stringify(img, null, '\t')
-    fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
-    document.getElementById('editartist').style.display='none'
-    document.getElementById("imgartist").innerHTML = "Artist: "+img[imginfoindex].artist
+    var reg = testregex.exec(event.target.value);
+    if (!reg) {
+        document.getElementById('editartistpencil').setAttribute('onclick',`editartiston()`)
+        titled = document.getElementById("modalimg").alt
+        imginfo = img.find( ({ file }) => file === titled );
+        imginfoindex = img.indexOf(imginfo)
+        img[imginfoindex].artist = event.target.value
+        var jsonoutput = JSON.stringify(img, null, '\t')
+        fs.writeFile('data/image.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('editartist').style.display='none'
+        document.getElementById("imgartist").innerHTML = "Artist: "+img[imginfoindex].artist
+    }
 });

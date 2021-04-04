@@ -1,29 +1,15 @@
 const sizeOf = require('image-size');
-sizeOf.setConcurrency(100000000);
-var doujinshiarray = [];
 var folderarray = [];
-var m = 0;
 var i = 0;
-var j = 0;
-var x = 0;
-var e = 0;
-var fu = 0;
-var ful = 0;
 var max_height = 230;
 var max_width = 230;
 var pg = 0;
-var tagjsonindex
-var doujinshiinfo
-var doujinshiinfoindex
-var doujinshiinfotesttag
-var doujinshiinfotestcharacter
 var zoomindex = settings.doujinshi.zoomindex;
-var doujinshi = require('../data/doujinshi.json');
-var tagcross = document.getElementsByClassName('tagcross');
-var charactercross = document.getElementsByClassName('charactercross');
 var showtag = document.getElementById("showtag");
 var showcharacter = document.getElementById("showcharacter");
-var tagjson
+var margindropdown = document.getElementById("margindropdown");
+var doujinshi = require('../data/doujinshi.json');
+var doujinshiarray = [];
 if (settings.doujinshi.zoomindex > 500) {zoomindex = 500};
 if (settings.doujinshi.zoomindex < 25) {zoomindex = 25};
 
@@ -78,7 +64,7 @@ function loaddoujinshi(toload){
             preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
             previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;cursor: pointer;`
 
-        } catch (e) {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty or not accepted")}
+        } catch (e) {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty or not accepted\n"+e)}
     } else {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty")}
     i++;
     z++;
@@ -99,6 +85,7 @@ document.body.addEventListener('scroll',()=>{
 var modal = document.getElementById("doujinshimodal");
 var modalImg = document.getElementById("modaldoujinshi");
 var showfulldoujinshi = document.getElementById("showfulldoujinshi")
+var imgazone = document.getElementById("imgazone")
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function() {
     modal.style.display = "none";
@@ -113,10 +100,27 @@ showfulldoujinshi.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+imgazone.onclick = function(event) {
+    if (event.target == imgazone) {
+        modal.style.display = "none";
+    }
+}
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    var isEscape = false;
+    if ("key" in evt) {
+        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+    } else {
+        isEscape = (evt.keyCode === 27);
+    }
+    if (isEscape) {
+        modal.style.display = "none";
+    }
+};
 
 // enter modal
 function viewdoujinshi(page, title) {
-    doujinshiinfo = 0
+    var doujinshiinfo = 0
     document.getElementById("taglist").innerHTML = ""
     document.getElementById("characterlist").innerHTML = ""
     document.getElementById("showtag").innerHTML = ""
@@ -127,22 +131,22 @@ function viewdoujinshi(page, title) {
     document.getElementById('editdatepencil').setAttribute('onclick',`editdateon()`)
     document.getElementById('editartistpencil').setAttribute('onclick',`editartiston()`)
     document.getElementById('edittitlepencil').setAttribute('onclick',`edittitleon()`)
-    doujinshi = require('../data/doujinshi.json');
-    tagjson = require('../data/placeholder.json');
+    var doujinshi = require('../data/doujinshi.json');
+    var tagjson = require('../data/placeholder.json');
     // add show tag when input
-    m = 0
+    var m = 0
     while (m < tagjson.tag.doujinshi.length) {
         var option = document.createElement('option');
         option.innerHTML = tagjson.tag.doujinshi[m]
         document.getElementById("taglist").appendChild(option)
         m++
     }
-    m = 0
-    while (m < tagjson.character.doujinshi.length) {
+    var b = 0
+    while (b < tagjson.character.doujinshi.length) {
         var option = document.createElement('option');
-        option.innerHTML = tagjson.character.doujinshi[m]
+        option.innerHTML = tagjson.character.doujinshi[b]
         document.getElementById("characterlist").appendChild(option)
-        m++
+        b++
     }
     // set page number
     doujinshiarray = [];
@@ -177,7 +181,7 @@ function viewdoujinshi(page, title) {
         document.getElementById("doujinshidate").innerHTML = "Date: "+doujinshiinfo.date
         document.getElementById('editdate').value = doujinshiinfo.date
         // show all tag
-        j = 0
+        var j = 0
         while (j < doujinshiinfo.tag.length) {
             var tag = document.createElement("a");
             var tagremove = document.createElement("span");
@@ -192,7 +196,7 @@ function viewdoujinshi(page, title) {
             j++
         }
         // show all character
-        e = 0
+        var e = 0
         while (e < doujinshiinfo.character.length) {
             var character = document.createElement("a");
             var characterremove = document.createElement("span");
@@ -207,29 +211,22 @@ function viewdoujinshi(page, title) {
             e++
         }
     }
+    // show doujinshi pages
     modalImg.src = settings.doujinshi.folder+"/"+title+"/"+doujinshiarray[page];
     if (settings.doujinshi.showfull == 1) {
-        fu = 0
+        var fu = 0
         showfulldoujinshi.innerHTML = ""
         modalImg.style.display="none";
         document.getElementById("forward").style.display="none"
         while (fu < doujinshiarray.length) {
             var imgfull = document.createElement("img");
             imgfull.src = settings.doujinshi.folder+"/"+title+"/"+doujinshiarray[fu];
-            imgfull.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
+            imgfull.style = "margin: auto auto "+margindropdown.value+"px;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
             imgfull.id = "imageforfull"+[fu]
             showfulldoujinshi.appendChild(imgfull)
             fu++
         }
     }
-    showcharacter.innerHTML += `
-    <input id="addcharacter" list="characterlist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
-    <img src="../img/done.png" id="addcharacterv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addcharacter()">
-    <img src="../img/pencil.png" id="charactereditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editcharacter()">`
-    showtag.innerHTML += `
-    <input id="addtag" list="taglist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
-    <img src="../img/done.png" id="addtagv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addtag()">
-    <img src="../img/pencil.png" id="tageditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittag()">`
     
     // scroll img to top
     if (settings.doujinshi.scrolltotop == 1) {
@@ -250,7 +247,7 @@ function zoomout() {
     else if (zoomindex == 25) {zoomindex=25}
     else {zoomindex-=25}
     if (settings.doujinshi.showfull == 1) {
-        ful = 0
+        var ful = 0
         while (ful < doujinshiarray.length) {
             document.getElementById("imageforfull"+ful).style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
             ful++
@@ -264,7 +261,7 @@ function zoomin() {
     else if (zoomindex == 500) {zoomindex=500}
     else {zoomindex+=25}
     if (settings.doujinshi.showfull == 1) {
-        ful = 0
+        var ful = 0
         while (ful < doujinshiarray.length) {
             document.getElementById("imageforfull"+ful).style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
             ful++
@@ -272,3 +269,23 @@ function zoomin() {
     } else {modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px";}
     zoompercent.innerHTML = zoomindex+"%"
 }
+
+// open folder function because "" and `` and '' mess with onclick=""
+function openfolder() {
+    require('child_process').exec(`start "" "${settings.doujinshi.folder}/${document.getElementById("modaldoujinshi").alt}"`);
+}
+
+// image margin
+if (settings.doujinshi.showfull == 1) {
+    margindropdown.value = settings.doujinshi.margin
+    margindropdown.style.display = "inline-block"
+    document.getElementById("margintext").style.display = "inline-block"
+}
+
+margindropdown.addEventListener('change', (updateValue) => {
+    var mlu = 0
+    while (mlu < doujinshiarray.length) {
+        document.getElementById("imageforfull"+mlu).style.margin = "auto auto "+margindropdown.value+"px"
+        mlu++
+    }
+});

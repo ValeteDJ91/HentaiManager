@@ -1,3 +1,8 @@
+var tagcross = document.getElementsByClassName('tagcross');
+var charactercross = document.getElementsByClassName('charactercross');
+var j = 0;
+var e = 0;
+
 // function used to show or hide the text insert for title
 function edittitleon() {
     titlec = document.getElementById('doujinshititle').innerHTML
@@ -43,21 +48,22 @@ function editdateoff() {
 // function used to add a tag
 function addtag() {
     var value = document.getElementById("addtag").value
-    var test = testregex.exec(value);
-    if (value && !test) {
+    var reg = testregex.exec(value);
+    if (value && !reg) {
         var showtag = document.getElementById("showtag");
         var tag = document.createElement("a");
         var tagremove = document.createElement("span");
         titled = document.getElementById("modaldoujinshi").alt
         doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-        doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-        doujinshiinfotesttag = doujinshi[doujinshiinfoindex].tag.indexOf(value)
+        var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        var doujinshiinfotesttag = doujinshi[doujinshiinfoindex].tag.indexOf(value)
         document.getElementById("addtag").value = ""
         if (doujinshiinfotesttag < 0) {
             tagremove.innerHTML = "X"
             tagremove.style = "color:#ffffff;vertical-align: middle;font-size: 13px;margin-right: 6px;margin-left: 6px;font-weight: bold;display: inline-block;cursor: pointer;"
             tagremove.className = "tagcross"
             tag.id = "tagcross"+j
+            tag.className = "tagclass"
             tagremove.setAttribute('onclick',`removetag("${titled}", "${value}");this.remove();document.getElementById("tagcross${j}").remove();`)
             tag.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
             tag.innerHTML = value
@@ -66,8 +72,8 @@ function addtag() {
             doujinshi[doujinshiinfoindex].tag.push(value)
             var jsonoutput = JSON.stringify(doujinshi, null, '\t')
             fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
-            tagjson = require('../data/placeholder.json')
-            tagjsonindex = tagjson.tag.doujinshi.indexOf(value)
+            var tagjson = require('../data/placeholder.json')
+            var tagjsonindex = tagjson.tag.doujinshi.indexOf(value)
             if (tagjsonindex < 0) {
                 tagjson.tag.doujinshi.push(value)
                 var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
@@ -81,8 +87,8 @@ function addtag() {
 // function used to remove a tag
 function removetag(titled, value) {
     doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-    doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-    doujinshiinfotesttag = doujinshi[doujinshiinfoindex].tag.indexOf(value)
+    var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+    var doujinshiinfotesttag = doujinshi[doujinshiinfoindex].tag.indexOf(value)
     if (doujinshiinfotesttag > -1) {
         doujinshi[doujinshiinfoindex].tag.splice(doujinshiinfotesttag, 1)
         var jsonoutput = JSON.stringify(doujinshi, null, '\t')
@@ -92,7 +98,7 @@ function removetag(titled, value) {
 
 // function used to show or hide the delete cross for tag
 function edittag() {
-    x = 0;
+    var x = 0;
     while (x < tagcross.length) {tagcross[x].style.display='inline-block';x++};
     document.getElementById("addtag").style.display='inline-block';
     document.getElementById("addtagv").style.display='inline-block';
@@ -100,7 +106,7 @@ function edittag() {
 }
 
 function edittagoff() {
-    x = 0;
+    var x = 0;
     while (x < tagcross.length) {tagcross[x].style.display='none';x++};
     document.getElementById("addtag").style.display='none';
     document.getElementById("addtagv").style.display='none';
@@ -117,8 +123,8 @@ function addcharacter() {
         var characterremove = document.createElement("span");
         titled = document.getElementById("modaldoujinshi").alt
         doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-        doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-        doujinshiinfotestcharacter = doujinshi[doujinshiinfoindex].character.indexOf(value)
+        var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        var doujinshiinfotestcharacter = doujinshi[doujinshiinfoindex].character.indexOf(value)
         document.getElementById("addcharacter").value = ""
         if (doujinshiinfotestcharacter < 0) {
             characterremove.innerHTML = "X"
@@ -128,13 +134,14 @@ function addcharacter() {
             characterremove.setAttribute('onclick',`removecharacter("${titled}", "${value}");this.remove();document.getElementById("charactercross${e}").remove();`)
             character.style = "color:#e0e0e0;background-color:#000000;border-radius: 5px;margin-right: 6px"
             character.innerHTML = value
+            character.className = "tagclass"
             character.appendChild(characterremove)
             showcharacter.appendChild(character)
             doujinshi[doujinshiinfoindex].character.push(value)
             var jsonoutput = JSON.stringify(doujinshi, null, '\t')
             fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
-            tagjson = require('../data/placeholder.json')
-            tagjsonindex = tagjson.character.doujinshi.indexOf(value)
+            var tagjson = require('../data/placeholder.json')
+            var tagjsonindex = tagjson.character.doujinshi.indexOf(value)
             if (tagjsonindex < 0) {
                 tagjson.character.doujinshi.push(value)
                 var tagjsonoutput = JSON.stringify(tagjson, null, '\t')
@@ -148,8 +155,8 @@ function addcharacter() {
 // function used to remove a character
 function removecharacter(titled, value) {
     doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-    doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-    doujinshiinfotestcharacter = doujinshi[doujinshiinfoindex].character.indexOf(value)
+    var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+    var doujinshiinfotestcharacter = doujinshi[doujinshiinfoindex].character.indexOf(value)
     if (doujinshiinfotestcharacter > -1) {
         doujinshi[doujinshiinfoindex].character.splice(doujinshiinfotestcharacter, 1)
         var jsonoutput = JSON.stringify(doujinshi, null, '\t')
@@ -159,7 +166,7 @@ function removecharacter(titled, value) {
 
 // function used to show or hide the delete cross for character
 function editcharacter() {
-    x = 0;
+    var x = 0;
     while (x < charactercross.length) {charactercross[x].style.display='inline-block';x++};
     document.getElementById("addcharacter").style.display='inline-block';
     document.getElementById("addcharacterv").style.display='inline-block';
@@ -167,7 +174,7 @@ function editcharacter() {
 }
 
 function editcharacteroff() {
-    x = 0;
+    var x = 0;
     while (x < charactercross.length) {charactercross[x].style.display='none';x++};
     document.getElementById("addcharacter").style.display='none';
     document.getElementById("addcharacterv").style.display='none';
@@ -176,39 +183,48 @@ function editcharacteroff() {
 
 // detect if title has been change them save change
 document.getElementById("edittitle").addEventListener('change', (updateValue) => {
-    document.getElementById('edittitlepencil').setAttribute('onclick',`edittitleon()`)
-    titled = document.getElementById("modaldoujinshi").alt
-    doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-    doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-    doujinshi[doujinshiinfoindex].name = event.target.value
-    var jsonoutput = JSON.stringify(doujinshi, null, '\t')
-    fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
-    document.getElementById('edittitle').style.display='none'
-    document.getElementById("doujinshititle").innerHTML = "Title: "+doujinshi[doujinshiinfoindex].name
+    var reg = testregex.exec(event.target.value);
+    if (!reg) {
+        document.getElementById('edittitlepencil').setAttribute('onclick',`edittitleon()`)
+        titled = document.getElementById("modaldoujinshi").alt
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshi[doujinshiinfoindex].name = event.target.value
+        var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+        fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('edittitle').style.display='none'
+        document.getElementById("doujinshititle").innerHTML = "Title: "+doujinshi[doujinshiinfoindex].name
+    }
 });
 
 // detect if artist has been change them save change
 document.getElementById("editartist").addEventListener('change', (updateValue) => {
-    document.getElementById('editartistpencil').setAttribute('onclick',`editartistoff()`)
-    titled = document.getElementById("modaldoujinshi").alt
-    doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-    doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-    doujinshi[doujinshiinfoindex].artist = event.target.value
-    var jsonoutput = JSON.stringify(doujinshi, null, '\t')
-    fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
-    document.getElementById('editartist').style.display='none'
-    document.getElementById("doujinshiartist").innerHTML = "Artist: "+doujinshi[doujinshiinfoindex].artist
+    var reg = testregex.exec(event.target.value);
+    if (!reg) {
+        document.getElementById('editartistpencil').setAttribute('onclick',`editartiston()`)
+        titled = document.getElementById("modaldoujinshi").alt
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshi[doujinshiinfoindex].artist = event.target.value
+        var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+        fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('editartist').style.display='none'
+        document.getElementById("doujinshiartist").innerHTML = "Artist: "+doujinshi[doujinshiinfoindex].artist
+    }
 });
 
 // detect if date has been change them save change
 document.getElementById("editdate").addEventListener('change', (updateValue) => {
-    document.getElementById('editdatepencil').setAttribute('onclick',`editdateon()`)
-    titled = document.getElementById("modaldoujinshi").alt
-    doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
-    doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
-    doujinshi[doujinshiinfoindex].date = event.target.value
-    var jsonoutput = JSON.stringify(doujinshi, null, '\t')
-    fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
-    document.getElementById('editdate').style.display='none'
-    document.getElementById("doujinshidate").innerHTML = "Date: "+doujinshi[doujinshiinfoindex].date
+    var reg = testregex.exec(event.target.value);
+    if (!reg) {
+        document.getElementById('editdatepencil').setAttribute('onclick',`editdateon()`)
+        titled = document.getElementById("modaldoujinshi").alt
+        doujinshiinfo = doujinshi.find( ({ folder }) => folder === titled );
+        var doujinshiinfoindex = doujinshi.indexOf(doujinshiinfo)
+        doujinshi[doujinshiinfoindex].date = event.target.value
+        var jsonoutput = JSON.stringify(doujinshi, null, '\t')
+        fs.writeFile('data/doujinshi.json', jsonoutput, function (err) {if (err) throw err;});
+        document.getElementById('editdate').style.display='none'
+        document.getElementById("doujinshidate").innerHTML = "Date: "+doujinshi[doujinshiinfoindex].date
+    }
 });

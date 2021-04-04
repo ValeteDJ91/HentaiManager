@@ -12,6 +12,7 @@ var doujloadfirst = document.getElementById("doujloadfirst");
 var doujloadscroll = document.getElementById("doujloadscroll");
 var scrolltop = document.getElementById("scrolltop");
 var showfull = document.getElementById("showfull");
+var margindropdown = document.getElementById("margindropdown");
 var zoomarray = [25, 37.5, 50, 62.5, 75, 87.5, 100, 112.5, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500];
 var imgsize = 0
 var doujsize = 0
@@ -71,6 +72,7 @@ function optionreset() {
     settings.doujinshi.doujloadscroll = 40
     settings.doujinshi.scrolltotop = 0
     settings.doujinshi.showfull = 0
+    settings.doujinshi.margin = 0
     savesettings()
     location.reload()
 }
@@ -167,6 +169,13 @@ if (settings.doujinshi.showfull == 1) {showfull.setAttribute('checked',"")}
 showfull.addEventListener('change', (updateValue) => {
     if (settings.doujinshi.showfull == 1) {settings.doujinshi.showfull = 0}
     else if (settings.doujinshi.showfull == 0) {settings.doujinshi.showfull = 1}
+    savesettings()
+});
+
+// handle image/page margin
+margindropdown.value = settings.doujinshi.margin
+margindropdown.addEventListener('change', (updateValue) => {
+    settings.doujinshi.margin = parseInt(margindropdown.value)
     savesettings()
 });
 

@@ -5,18 +5,19 @@
 		"doujfoldsize": "41.46Go"
 	},
 	"image": {
-		"folder": "V:\\dev\\HentaiManager/image",
+		"folder": "V:/dev/HentaiManager/image",
 		"imgsize": 3,
 		"imgloadfirst": 700,
-		"imgloadscroll": 400
+		"imgloadscroll": 500
 	},
 	"doujinshi": {
-		"folder": "V:\\dev\\HentaiManager/doujinshi",
+		"folder": "V:/dev/HentaiManager/doujinshi",
 		"zoomindex": 100,
 		"doujloadfirst": 80,
 		"doujloadscroll": 40,
 		"scrolltotop": 0,
-		"showfull": 0
+		"showfull": 0,
+		"margin": 0
 	},
-	"version": "Hentai manager v0.0.12"
+	"version": "Hentai manager v0.0.13"
 }

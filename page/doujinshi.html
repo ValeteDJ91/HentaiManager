@@ -63,39 +63,62 @@
         <!--DOUJINSHI MODAL/ZOOM-->
         <div id="doujinshimodal" class="modal">    
             <!-- doujinshi info -->
-            <div style="background-color:#2b2b2bbb;width: 100%;text-align: left;vertical-align: middle;padding-top: 10px;">
-                <div style="width: 100%">
-                    <p id="doujinshititle" style="margin-left:16%;color: #e0e0e0;margin-top: 10px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Title: </p>
-                    <input id="edittitle" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;">
-                    <img src="../img/pencil.png" id="edittitlepencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittitleon()">
+            <div style="background-color:#2b2b2bbb;width: 100%;text-align: left;vertical-align: middle;padding-top: 12px;">
+                <img style="position: absolute;left: 60px;top: 8px;width: 30px;cursor: pointer;" src="../img/folder.png" onclick="openfolder()">
+                <div style="margin-left:16%;max-width: 100%;">
+                    <p id="doujinshititle" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 90%;vertical-align: top">Title: </p>
+                    <input id="edittitle" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;margin-top: -5px;">
+                    <img src="../img/pencil.png" id="edittitlepencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;margin-top: 0px" onclick="edittitleon()">
                 </div>
-                <div style="width: 100%">
-                    <p id="doujinshiartist" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Artist: </p>
+                <div style="margin-left:16%;max-width: 100%;">
+                    <p id="doujinshiartist" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 90%;vertical-align: top">Artist: </p>
                     <input id="editartist" value="" style="color:#e0e0e0;width: 40%;height: 17px;background-color:#2b2b2b00;display: none;">
                     <img src="../img/pencil.png" id="editartistpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editartiston()">
                 </div>
-                <div style="width: 100%">
-                    <p id="doujinshitag" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;vertical-align:top">Tag: </p>
-                    <div id="showtag" style="display:inline-block;max-width: 70%;overflow:visible"></div>
+                <div style="margin-left:16%;max-width: 100%;">
+                    <p id="doujinshitag" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;vertical-align:top">Tag: </p>
+                    <div id="showtag" style="display:inline-block;max-width: 90%;overflow:visible"></div>
+                    <input id="addtag" list="taglist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/done.png" id="addtagv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addtag()">
+                    <img src="../img/pencil.png" id="tageditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittag()">
                     <datalist id="taglist"></datalist>
                 </div>
-                <div style="width: 100%">
-                    <p id="doujinshicharacter" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Character: </p>
-                    <div id="showcharacter" style="display:inline-block;max-width: 70%;overflow:visible"></div>
+                <div style="margin-left:16%;max-width: 100%;">
+                    <p id="doujinshicharacter" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;vertical-align:top">Character: </p>
+                    <div id="showcharacter" style="display:inline-block;max-width: 90%;overflow:visible"></div>
+                    <input id="addcharacter" list="characterlist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/done.png" id="addcharacterv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addcharacter()">
+                    <img src="../img/pencil.png" id="charactereditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editcharacter()">
                     <datalist id="characterlist"></datalist>
                 </div>
-                <div style="width: 100%">
-                    <p id="doujinshidate" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Date: </p>
+                <div style="margin-left:16%;max-width: 100%;">
+                    <p id="doujinshidate" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 90%;vertical-align: top">Date: </p>
                     <input id="editdate" value="" style="color:#e0e0e0;width: 40%;height: 17px;background-color:#2b2b2b00;display: none;">
                     <img src="../img/pencil.png" id="editdatepencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editdateon()">
                 </div>
             </div>
             <!-- zoom/page/close -->
             <div style="position: relative;background-color:#2b2b2b75;margin-top: 0px;margin-bottom: 20px;">
-                <div style="vertical-align: middle;position: relative;top: 0px;">
+                <div style="vertical-align: middle;position: relative;top: 0px;display: inline-block;">
                     <img src="../img/zoomout.png" style="width: 27px;display:inline-block;vertical-align: middle;cursor: pointer;left: 85px;position: relative;" onclick="zoomout()">
                     <p id="zoompercent" style="display:inline-block;color: #d1d1d1;font-size: 17px;vertical-align: middle;left: 85px;position: relative;">100%</p>
                     <img src="../img/zoomin.png" style="width: 27px;display:inline-block;vertical-align: middle;cursor: pointer;left: 85px;position: relative;" onclick="zoomin()">
+                </div>
+                <div style="vertical-align: middle;position: relative;top: 0px;display: inline-block;margin-left: 15px;">
+                    <p id="margintext" style="display: none;color: #d1d1d1;font-size: 17px;vertical-align: middle;left: 85px;position: relative;">Page margin: </p>
+                    <select style="display: none;vertical-align: middle;left: 85px;position: relative;" id="margindropdown">
+                        <option value="0">0</option>
+                        <option value="2">1</option>
+                        <option value="4">2</option>
+                        <option value="6">3</option>
+                        <option value="8">4</option>
+                        <option value="10">5</option>
+                        <option value="12">6</option>
+                        <option value="14">7</option>
+                        <option value="16">8</option>
+                        <option value="18">9</option>
+                        <option value="20">10</option>
+                    </select>
                 </div>
                 <div style="vertical-align: middle;position: absolute;top: -5px;left: 50%;">
                     <p style="text-align: center;font-size:20px;display:inline-block" id="pageview1"></p>
@@ -105,8 +128,10 @@
                 <span class="close">&times;</span>
             </div>
             <!-- image -->
-            <img id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
-            <button id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 1010px;width: 360px;top: 220px;left: 50%"></button>
+            <div style="position: relative" id="imgazone">
+                <img id="modaldoujinshi" onclick= "pg--; viewdoujinshi(pg, this.alt);">
+                <a id= "forward" onclick= "pg++; viewdoujinshi(pg, this.alt);" style="opacity: 0%;position:absolute;height: 100%;width: 30%;top: 0;left: 55%;"></a>
+            </div>
             <div id="showfulldoujinshi"></div>
             <br><br>
         </div>

@@ -74,29 +74,38 @@
             <img class="modal-content" id="modalimg">
             
             <div style="background-color:#2b2b2bbb;width: 100%;text-align: left;vertical-align: middle;padding-top : 8px;margin-top: 20px;padding-bottom: 8px;">
-                <div style="width: 100%">
-                    <p id="imgtitle" style="margin-left:16%;color: #e0e0e0;margin-top: 10px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Title: </p>
-                    <input id="edittitle" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;">
-                    <img src="../img/pencil.png" id="edittitlepencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittitleon()">
+                <div style="max-width: 100%;margin-left:16%;">
+                    <p id="imgtitle" style="color: #e0e0e0;margin-top: 10px;margin-bottom: 10px;display:inline-block;max-width: 90%;vertical-align: top">Title: </p>
+                    <input id="edittitle" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;margin-top: 9px">
+                    <img src="../img/pencil.png" id="edittitlepencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;margin-top: 9px" onclick="edittitleon()">
                 </div>
-                <div style="width: 100%">
-                    <p id="imgartist" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Artist: </p>
-                    <input id="editartist" value="" style="color:#e0e0e0;width: 40%;height: 17px;background-color:#2b2b2b00;display: none;">
+                <div style="max-width: 100%;margin-left:16%;">
+                    <p id="imgartist" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 90%;">Artist: </p>
+                    <input id="editartist" value="" style="color:#e0e0e0;width: 40%;height: 17px;background-color:#2b2b2b00;display: none;vertical-align: top">
                     <img src="../img/pencil.png" id="editartistpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editartiston()">
                 </div>
-                <div style="width: 100%">
-                    <p id="imgtag" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Tag: </p>
-                    <div id="showtag" style="display:inline-block;max-width: 70%;overflow:visible"></div>
+                <div style="max-width: 100%;margin-left:16%;">
+                    <p id="imgtag" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;vertical-align:top">Tag: </p>
+                    <div id="showtag" style="display:inline-block;max-width: 90%;overflow:visible"></div>
+                    <input id="addtag" list="taglist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/done.png" id="addtagv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addtag()">
+                    <img src="../img/pencil.png" id="tageditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="edittag()">
                     <datalist id="taglist"></datalist>
                 </div>
-                <div style="width: 100%">
-                    <p id="imgcharacter" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Character: </p>
-                    <div id="showcharacter" style="display:inline-block;max-width: 70%;overflow:visible"></div>
+                <div style="max-width: 100%;margin-left:16%;">
+                    <p id="imgcharacter" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;vertical-align:top">Character: </p>
+                    <div id="showcharacter" style="display:inline-block;max-width: 90%;overflow:visible"></div>
+                    <input id="addcharacter" list="characterlist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/done.png" id="addcharacterv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addcharacter()">
+                    <img src="../img/pencil.png" id="charactereditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editcharacter()">
                     <datalist id="characterlist"></datalist>
                 </div>
-                <div style="width: 100%">
-                    <p id="imgimagegroup" style="margin-left:16%;color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;">Image group: </p>
-                    <div id="showimagegroup" style="display:inline-block;max-width: 70%;overflow:visible"></div>
+                <div style="max-width: 100%;margin-left:16%;">
+                    <p id="imgimagegroup" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 65%;vertical-align:top">Image group: </p>
+                    <div id="showimagegroup" style="display:inline-block;max-width: 90%;overflow:visible"></div>
+                    <input id="addimagegroup" list="imggrouplist" value="" style="color:#e0e0e0;width: 150px;height: 17px;background-color:#2b2b2b00;display: none;">
+                    <img src="../img/done.png" id="addimagegroupv" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;display: none;" onclick="addimagegroup()">
+                    <img src="../img/pencil.png" id="imagegroupeditpencil" style="width: 15px;display:inline-block;vertical-align: middle;cursor: pointer;" onclick="editimagegroup()">
                     <datalist id="imggrouplist"></datalist>
                 </div>
             </div>

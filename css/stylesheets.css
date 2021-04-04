@@ -1,13 +1,15 @@
 body,html {
-    background-color: #171C1D;
-    height: 100%;
-    position: relative;
-    overflow: auto;
-    font-family: "Helvetica", sans-serif;
-    margin:0px;
-    padding:0px;
+background-color: #171C1D;
+height: 100%;
+position: relative;
+overflow: auto;
+font-family: "Helvetica", sans-serif;
+margin:0px;
+padding:0px;
 }
+
 p { color:#b3b3b3; }
+
 h1,h2 { color:  #EBEBEB; }
 
 .fa {
@@ -269,4 +271,24 @@ background-color:#747474;
   font-weight: bold;
   display: none;
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px;
+  border-style: solid;
+  border-color: #3f3f3f;
+  border-top-color: #3f3f3f00;
+  border-bottom-color: #3f3f3f00;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b4b4b;
 }

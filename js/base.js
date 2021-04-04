@@ -1,5 +1,5 @@
 const fs = require('fs')
-var testregex = /[<>/]/i
+var testregex = /[<>]/i
 try {
     var jsoninput = fs.readFileSync('data/settings.json', 'utf8')
     var settings = JSON.parse(jsoninput)
@@ -22,9 +22,10 @@ try {
             "doujloadfirst": 80,
             "doujloadscroll": 40,
             "scrolltotop": 0,
-            "showfull": 0
+            "showfull": 0,
+            "margin": 0
         },
-        "version": "Hentai manager v0.0.12"
+        "version": "Hentai manager v0.0.13"
     }
     var jsonoutput = JSON.stringify(settings, null, '\t')
     fs.writeFile('data/settings.json', jsonoutput, function (err) {if (err) throw err;});
