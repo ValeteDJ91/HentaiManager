@@ -19,64 +19,117 @@ fs.readdirSync(settings.doujinshi.folder).forEach(file => {
 });
 var doujinshizone = document.getElementById("doujinshizone");
 if (folderarray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";doujinshizone.appendChild(nfa);nfa.innerHTML = "No doujinshi found ;(";}
-function loaddoujinshi(toload){
+function loaddoujinshi(toload, search){
     document.getElementById("loadinginfo").style.display= "block"
+	document.getElementById("doujinshimodal").style.display= "none"
     var z = 0;
-    while(i < folderarray.length && z < toload) {
-    doujinshiarray = [];
-    fs.readdirSync(settings.doujinshi.folder+"/"+folderarray[i]).forEach(file => {
-        doujinshiarray.push(file);
-    });
-    if (doujinshiarray.length !== 0){
-        try {
-            var previewsize = sizeOf(settings.doujinshi.folder+"/"+folderarray[i]+"/"+doujinshiarray[0])
-            var previewcontainer = document.createElement("div");
-            var preview = document.createElement("img");
-            var title = document.createElement("p");
-            preview.src = settings.doujinshi.folder+"/"+folderarray[i]+"/"+doujinshiarray[0];
-            preview.style = `height: ${previewsize.height}px; width: ${previewsize.width}px`
-            doujinshiinfo = doujinshi.find( ({ folder }) => folder === folderarray[i] );
-            if (!doujinshiinfo) {
-                title.innerHTML = folderarray[i]
-                previewcontainer.alt = folderarray[i]
-            } else {
-                title.innerHTML = doujinshiinfo.name
-                previewcontainer.alt = doujinshiinfo.name
-            }
-            previewcontainer.id = "contdoujinshi"+i
-            title.style = `margin: 6px;font-size: 13px;`
-            previewcontainer.appendChild(preview);
-            previewcontainer.appendChild(title);
-            previewcontainer.setAttribute('onclick',`modal.style.display = 'block'; pg = 0; viewdoujinshi(${pg}, "${folderarray[i]}"); document.getElementById("modaldoujinshi").alt = "${folderarray[i]}"; document.getElementById("forward").alt = "${folderarray[i]}"`)
-            doujinshizone.appendChild(previewcontainer);
-            if(preview.height > max_height && preview.height>preview.width || preview.height==preview.width)
-            {
-                ratio = max_height / preview.height;
-                new_height = preview.height * ratio;
-                new_width = preview.width * ratio;
-            }
-            if(preview.width > max_width  && preview.width>preview.height)
-            {
-                ratio = max_width / preview.width;
-                new_height = preview.height * ratio;
-                new_width = preview.width * ratio;
-            }
-            preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
-            previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;cursor: pointer;`
 
-        } catch (e) {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty or not accepted\n"+e)}
-    } else {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty")}
-    i++;
-    z++;
+	var titlesearch = document.getElementById("titlesearch").value
+	var tagsearch = document.getElementById("tagsearch").value
+	var charactercearch = document.getElementById("charactercearch").value
+	var artistsearch = document.getElementById("artistsearch").value
+    if ((titlesearch  && search == 1) || (tagsearch && search == 1) || (charactercearch && search == 1) || (artistsearch && search == 1) || (doujpgarrayshorter.length !== parseInt(inputLeft.value) && search == 1) || (doujpgarraylonger.length !== parseInt(inputRight.value) && search == 1)) {
+        doujinshizone.innerHTML = '';
+        i = 0
+    } else if (!titlesearch && !tagsearch && !charactercearch && !artistsearch && search == 1 && doujpgarrayshorter.length == parseInt(inputLeft.value) && doujpgarraylonger.length == parseInt(inputRight.value)) {
+        document.getElementById("loadinginfo").style.display= "none"
+        return;
+    }
+
+	var folderarray = []
+	fs.readdirSync(settings.doujinshi.folder).forEach(file => {
+		if (titlesearch || tagsearch || charactercearch || artistsearch || doujpgarrayshorter.length !== parseInt(inputLeft.value) || doujpgarraylonger.length !== parseInt(inputRight.value)) {
+            var adddouj = 0
+            var adddoujneed = 0
+            if (titlesearch) {var adddoujneed = adddoujneed+1}
+            if (tagsearch) {var adddoujneed = adddoujneed+1}
+            if (charactercearch) {var adddoujneed = adddoujneed+1}
+            if (artistsearch) {var adddoujneed = adddoujneed+1}
+			try {fileinfo = doujinshi.find( ({ folder }) => folder === file );}
+			catch (e) {console.error(e)}
+            finally {
+                if (fileinfo && titlesearch && fileinfo.name.includes(titlesearch)) {var adddouj = adddouj+1} 
+                else if (fileinfo && titlesearch && !fileinfo.name.includes(titlesearch)){var adddouj = adddouj-1}
+                else if (!fileinfo && titlesearch && file.includes(titlesearch)) {var adddouj = adddouj+1} 
+                else if (!fileinfo && titlesearch && !file.includes(titlesearch)){var adddouj = adddouj-1}
+			    if (fileinfo && tagsearch && fileinfo.tag.indexOf(tagsearch) > -1) {var adddouj = adddouj+1} 
+                else if (fileinfo && tagsearch && fileinfo.tag.indexOf(tagsearch) == -1) {var adddouj = adddouj-1}
+                else if (!fileinfo && tagsearch) {var adddouj = adddouj-1}
+			    if (fileinfo && charactercearch && fileinfo.character.indexOf(charactercearch) > -1) {var adddouj = adddouj+1} 
+                else if (fileinfo && charactercearch && fileinfo.character.indexOf(charactercearch) == -1) {var adddouj = adddouj-1}
+                else if (!fileinfo && charactercearch) {var adddouj = adddouj-1}
+			    if (fileinfo && artistsearch && fileinfo.artist.includes(artistsearch)) {var adddouj = adddouj+1} 
+                else if (fileinfo && artistsearch && !!fileinfo.artist.includes(artistsearch)) {var adddouj = adddouj-1}
+                else if (!fileinfo && artistsearch) {var adddouj = adddouj-1}
+                if (adddouj >= adddoujneed) {
+                    var folder = file
+                    var doujpgarraytestnow = [];
+                    fs.readdirSync(settings.doujinshi.folder+"/"+folder).forEach(file => {
+                        doujpgarraytestnow.push(file);
+                    });
+                    if (doujpgarraytestnow.length <= parseInt(inputRight.value) && doujpgarraytestnow.length >= parseInt(inputLeft.value)) {
+                        folderarray.push(folder);
+                    }
+                }
+            }
+		} else {folderarray.push(file);}
+	});
+    while(i < folderarray.length && z < toload) {
+        doujinshiarray = [];
+        fs.readdirSync(settings.doujinshi.folder+"/"+folderarray[i]).forEach(file => {
+            doujinshiarray.push(file);
+        });
+        if (doujinshiarray.length !== 0){
+            try {
+                var previewsize = sizeOf(settings.doujinshi.folder+"/"+folderarray[i]+"/"+doujinshiarray[0])
+                var previewcontainer = document.createElement("div");
+                var preview = document.createElement("img");
+                var title = document.createElement("p");
+                preview.src = settings.doujinshi.folder+"/"+folderarray[i]+"/"+doujinshiarray[0];
+                preview.style = `height: ${previewsize.height}px; width: ${previewsize.width}px`
+                doujinshiinfo = doujinshi.find( ({ folder }) => folder === folderarray[i] );
+                if (!doujinshiinfo) {
+                    title.innerHTML = folderarray[i]
+                    previewcontainer.alt = folderarray[i]
+                } else {
+                    title.innerHTML = doujinshiinfo.name
+                    previewcontainer.alt = doujinshiinfo.name
+                }
+                previewcontainer.id = "contdoujinshi"+i
+                title.style = `margin: 6px;font-size: 13px;`
+                previewcontainer.appendChild(preview);
+                previewcontainer.appendChild(title);
+                previewcontainer.setAttribute('onclick',`modal.style.display = 'block'; pg = 0; viewdoujinshi(${pg}, "${folderarray[i]}"); document.getElementById("modaldoujinshi").alt = "${folderarray[i]}"; document.getElementById("forward").alt = "${folderarray[i]}"`)
+                doujinshizone.appendChild(previewcontainer);
+                if(preview.height > max_height && preview.height>preview.width || preview.height==preview.width)
+                {
+                    ratio = max_height / preview.height;
+                    new_height = preview.height * ratio;
+                    new_width = preview.width * ratio;
+                }
+                if(preview.width > max_width  && preview.width>preview.height)
+                {
+                    ratio = max_width / preview.width;
+                    new_height = preview.height * ratio;
+                    new_width = preview.width * ratio;
+                }
+                preview.style = `height: ${new_height}px; width: ${new_width}px;display: unset;margin-top: 6px;`
+                previewcontainer.style = `border-radius: 5px;background-color: #2b2b2b;margin-top: 6px;margin-right: 6px;text-align: center;position: relative;width: ${new_width+15}px;display: inline-block;vertical-align: middle;cursor: pointer;`
+
+            } catch (e) {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty or not accepted\n"+e)}
+        } else {console.error("Failed to load: "+settings.doujinshi.folder+"/"+folderarray[i]+"\nFolder Empty")}
+        i++;
+        z++;
     }
     document.getElementById("loadinginfo").style.display= "none"
 }
-loaddoujinshi(settings.doujinshi.doujloadfirst)
+loaddoujinshi(settings.doujinshi.doujloadfirst, 0)
+document.getElementById("searchbutton").setAttribute('onclick',`loaddoujinshi(${settings.doujinshi.doujloadfirst}, 1)`)
 
 // load more doujinshi on scroll
 document.body.addEventListener('scroll',()=>{
     if (document.body.scrollTop+3500 > document.body.scrollHeight) {
-        loaddoujinshi(settings.doujinshi.doujloadscroll)
+        loaddoujinshi(settings.doujinshi.doujloadscroll, 0)
     }
 })
 
@@ -153,7 +206,11 @@ function viewdoujinshi(page, title) {
     fs.readdirSync(settings.doujinshi.folder+"/"+title).forEach(file => {
         if (file.includes(".png")||file.includes(".jpg")||file.includes(".jpeg")||file.includes(".gif")) {doujinshiarray.push(file);}
     });
-    if (page >= doujinshiarray.length) {
+    if (page >= doujinshiarray.length && settings.doujinshi.closealpage == 1) {
+        modal.style.display = "none";
+        page = 0
+        pg = 0
+    } else if (page >= doujinshiarray.length && settings.doujinshi.closealpage == 0) {
         page = 0
         pg = 0
     }

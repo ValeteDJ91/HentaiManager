@@ -1,6 +1,6 @@
 {
   "name": "hentaimanager",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "a program that help you manage your homework",
   "main": "index.js",
   "scripts": {

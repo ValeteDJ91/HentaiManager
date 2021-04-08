@@ -23,9 +23,10 @@ try {
             "doujloadscroll": 40,
             "scrolltotop": 0,
             "showfull": 0,
-            "margin": 0
+            "margin": 0,
+            "closealpage": 0
         },
-        "version": "Hentai manager v0.0.13"
+        "version": "Hentai manager v0.0.14"
     }
     var jsonoutput = JSON.stringify(settings, null, '\t')
     fs.writeFile('data/settings.json', jsonoutput, function (err) {if (err) throw err;});

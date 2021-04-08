@@ -14,33 +14,56 @@
         <ul>
             <li>
                 <i class="fa fa-2x"><img style="height: 35px" src="../img/icon.ico"></i>
-                <span class="nav-text" style="color: #ffffff;">
-                    HentaiManager
-                </span>
+                <span class="nav-text" style="color: #ffffff;">HentaiManager</span>
             </li>
             <li>
                 <a href="../index.html">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/dashboard.png"></i>
-                    <span class="nav-text">
-                        Dashboard
-                    </span>
+                    <span class="nav-text">Dashboard</span>
                 </a>
             </li>
-            <li class="has-subnav">
+            <li>
                 <a href="image.html">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/image.png"></i>
-                    <span class="nav-text">
-                        Image
-                    </span>
+                    <span class="nav-text">Image</span>
                 </a>
             </li>
-            <li class="has-subnav">
+            <li>
                 <a style="cursor: pointer;">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/doujinshi.png"></i>
-                    <span class="nav-text">
-                        Doujinshi
-                    </span>
+                    <span class="nav-text">Doujinshi</span>
                 </a>
+            </li>
+            <li>
+                <a style="cursor: pointer;" onclick="searchon()" id="searchtoggle">
+                    <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;margin-left: 15px;position: relative;padding-right: 10px;" src="../img/search.png"></i>
+                    <span class="nav-text">Search</span>
+                    <i class="fa fa-2x"><img style="height: 15px;margin-top: 5px;" src="../img/droparrow.png"></i>
+                </a>
+                <div style="display: none" id="searchdiv">
+                    <p style="margin-bottom: 5px;color: #ffffff;">Title:</p>
+                    <input value="" style="margin-left: 10px;" id="titlesearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Tag:</p>
+                    <input value="" style="margin-left: 10px;" id="tagsearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Character:</p>
+                    <input value="" style="margin-left: 10px;" id="charactercearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Artist:</p>
+                    <input value="" style="margin-left: 10px;" id="artistsearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Page:</p>
+                    <p style="display: inline-block;left: 12px;text-align: left;position: absolute;margin-top:8px;" id="minpage">1</p>
+                    <p style="display: inline-block;right: 16px;position: absolute;text-align: right;margin-top:8px;" id="maxpage">1843</p>
+                    <div style="margin-top: 44px;margin-right: 20px;">
+                        <input type="range" id="input-left" min="0" max="100" value="0" class="doubleslider">
+                        <input type="range" id="input-right" min="0" max="100" value="100" class="doubleslider">
+                        <div class="slider">
+                            <div class="track"></div>
+                            <div class="range"></div>
+                            <div class="thumb left"></div>
+                            <div class="thumb right"></div>
+                        </div>
+                    </div>
+                    <button style="vertical-align:middle; border-radius: 0;margin-top: 23px;width:120px;height: 30px;margin-left: 50px;" onclick="search()" id="searchbutton">Search</button>
+                </div>
             </li>
         </ul>
 
@@ -48,9 +71,7 @@
             <li>
                <a href="settings.html">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/settings.png"></i>
-                    <span class="nav-text">
-                        Settings
-                    </span>
+                    <span class="nav-text">Settings</span>
                 </a>
             </li>  
         </ul>
@@ -144,5 +165,6 @@
 </html>
 
 <script src="../js/base.js"></script>
+<script src="../js/searchdoujinshi.js"></script>
 <script src="../js/showdoujinshi.js"></script>
 <script src="../js/tagdoujinhsi.js"></script>

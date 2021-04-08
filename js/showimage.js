@@ -7,8 +7,6 @@ var max_height = [1, 40, 75, 130, 230, 400, 600];
 var max_width = [1, 40, 75, 130, 230, 400, 600];
 var slider = document.getElementById("sizeslider");
 var imgerrordir = settings.image.folder+"/Image_errors";
-var imgtoload = settings.image.imgloadfirst
-var imgtoloadscroll = settings.image.imgloadscroll
 var showtag = document.getElementById("showtag");
 var showcharacter = document.getElementById("showcharacter");
 var showimagegroup = document.getElementById("showimagegroup");
@@ -20,6 +18,7 @@ if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgs
 fs.readdirSync(settings.image.folder).forEach(file => {
     filearray.push(file);
 });
+
 var imagezone = document.getElementById("imagezone");
 if (filearray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";imagezone.appendChild(nfa);nfa.innerHTML = "No images found ;(";}
 function loadimage(toload){
@@ -68,12 +67,12 @@ function loadimage(toload){
     }
     document.getElementById("loadinginfo").style.display= "none"
 }
-loadimage(imgtoload)
+loadimage(settings.image.imgloadfirst)
 
 // load more image on scroll
 document.body.addEventListener('scroll',()=>{
     if (document.body.scrollTop+5000 > document.body.scrollHeight) {
-        loadimage(imgtoloadscroll)
+        loadimage(settings.image.imgloadscroll)
     }
 })
 

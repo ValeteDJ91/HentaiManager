@@ -14,33 +14,45 @@
         <ul>
             <li>
                 <i class="fa fa-2x"><img style="height: 35px" src="../img/icon.ico"></i>
-                <span class="nav-text" style="color: #ffffff;">
-                    HentaiManager
-                </span>
+                <span class="nav-text" style="color: #ffffff;">HentaiManager</span>
             </li>
             <li>
                 <a href="../index.html">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/dashboard.png"></i>
-                    <span class="nav-text">
-                        Dashboard
-                    </span>
+                    <span class="nav-text">Dashboard</span>
                 </a>
             </li>
             <li class="has-subnav">
                 <a style="cursor: pointer;">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/image.png"></i>
-                    <span class="nav-text">
-                        Image
-                    </span>
+                    <span class="nav-text">Image</span>
                 </a>
             </li>
             <li class="has-subnav">
                 <a href="doujinshi.html">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/doujinshi.png"></i>
-                    <span class="nav-text">
-                        doujinshi
-                    </span>
+                    <span class="nav-text">Doujinshi</span>
                 </a>
+            </li>
+            <li>
+                <a style="cursor: pointer;" onclick="searchon()" id="searchtoggle">
+                    <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;margin-left: 15px;position: relative;padding-right: 10px;" src="../img/search.png"></i>
+                    <span class="nav-text">Search</span>
+                    <i class="fa fa-2x"><img style="height: 15px;margin-top: 5px;" src="../img/droparrow.png"></i>
+                </a>
+                <div style="display: none" id="searchdiv">
+                    <p style="margin-bottom: 5px;color: #ffffff;">Title:</p>
+                    <input value="" style="margin-left: 10px;" id="titlesearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Tag:</p>
+                    <input value="" style="margin-left: 10px;" id="tagsearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Character:</p>
+                    <input value="" style="margin-left: 10px;" id="charactercearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">Artist:</p>
+                    <input value="" style="margin-left: 10px;" id="artistsearch"></input>
+                    <p style="margin-bottom: 5px;color: #ffffff;">ImgGroup:</p>
+                    <input value="" style="margin-left: 10px;" id="imggroupsearch"></input>
+                    <button style="vertical-align:middle; border-radius: 0;margin-top: 20px;width:120px;height: 30px;margin-left: 50px;" onclick="search()">Search</button>
+                </div>
             </li>
         </ul>
 
@@ -48,9 +60,7 @@
             <li>
                <a href="settings.html">
                     <i class="fa fa-2x"><img style="height: 35px;margin-top: 5px;" src="../img/settings.png"></i>
-                    <span class="nav-text">
-                        Settings
-                    </span>
+                    <span class="nav-text">Settings</span>
                 </a>
             </li>  
         </ul>
@@ -121,3 +131,4 @@
 <script src="../js/base.js"></script>
 <script src="../js/showimage.js"></script>
 <script src="../js/tagimage.js"></script>
+<script src="../js/searchimage.js"></script>

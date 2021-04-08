@@ -2,7 +2,7 @@
 	"general": {
 		"recalcul": 0,
 		"imgfoldsize": "33.80Go",
-		"doujfoldsize": "41.46Go"
+		"doujfoldsize": "48.39Go"
 	},
 	"image": {
 		"folder": "V:/dev/HentaiManager/image",
@@ -17,7 +17,8 @@
 		"doujloadscroll": 40,
 		"scrolltotop": 0,
 		"showfull": 0,
-		"margin": 0
+		"margin": 0,
+		"closealpage": 0
 	},
-	"version": "Hentai manager v0.0.13"
+	"version": "Hentai manager v0.0.14"
 }

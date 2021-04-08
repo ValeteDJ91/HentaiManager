@@ -1,16 +1,11 @@
 var imgarray = [];
 var doujarray = [];
 var doujpgarray = [];
-var doujpgarraynow = [];
-var doujpgarraylonger = [];
-var filearrayimg = [];
-var folderarraydouj = [];
 var folderarraydoujin = [];
 var imgsize = 0
 var imgsizeb = 0
 var doujsize = 0
 var doujsizeb = 0
-var longername
 var i = 0
 var p = 0
 var a = 0
@@ -47,14 +42,9 @@ fs.readdirSync(settings.doujinshi.folder).forEach(file => {
 while (i < doujarray.length) {
     fs.readdirSync(settings.doujinshi.folder+"/"+doujarray[i]).forEach(file => {
         doujpgarray.push(file);
-        doujpgarraynow.push(file);
     });
-    if (doujpgarraynow.length > doujpgarraylonger.length) {doujpgarraylonger = doujpgarraynow; longername = doujarray[i]}
-    doujpgarraynow = [];
     i++
 }
-console.log("Longer doujinshi: "+longername)
-console.log("With a total of: "+doujpgarraylonger.length+" pages")
 
 var jsoninput = fs.readFileSync('data/placeholder.json', 'utf8')
 var tagjson = JSON.parse(jsoninput)

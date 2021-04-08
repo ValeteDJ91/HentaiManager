@@ -13,9 +13,8 @@ var doujloadscroll = document.getElementById("doujloadscroll");
 var scrolltop = document.getElementById("scrolltop");
 var showfull = document.getElementById("showfull");
 var margindropdown = document.getElementById("margindropdown");
+var closealpage = document.getElementById("closealpage");
 var zoomarray = [25, 37.5, 50, 62.5, 75, 87.5, 100, 112.5, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500];
-var imgsize = 0
-var doujsize = 0
 var filet
 
 // ---------------------------GENERAL-----------------------------------
@@ -31,11 +30,13 @@ recalcul.addEventListener('change', (updateValue) => {
 // recalcule folder size
 function fullrecalcul() {
     // image
+    var imgsize = 0
     fs.readdirSync(settings.image.folder).forEach(file => {
         imgsize += fs.statSync(settings.image.folder+"/"+file).size
     });
     imgsize = btoo(imgsize)
     // doujinshi
+    var doujsize = 0
     fs.readdirSync(settings.doujinshi.folder).forEach(file => {
         filet = file
         fs.readdirSync(settings.doujinshi.folder+"/"+file).forEach(file => {
@@ -73,6 +74,7 @@ function optionreset() {
     settings.doujinshi.scrolltotop = 0
     settings.doujinshi.showfull = 0
     settings.doujinshi.margin = 0
+    settings.doujinshi.closealpage = 0
     savesettings()
     location.reload()
 }
@@ -176,6 +178,14 @@ showfull.addEventListener('change', (updateValue) => {
 margindropdown.value = settings.doujinshi.margin
 margindropdown.addEventListener('change', (updateValue) => {
     settings.doujinshi.margin = parseInt(margindropdown.value)
+    savesettings()
+});
+
+// set if the programm will scroll the doujinshi img to top
+if (settings.doujinshi.closealpage == 1) {closealpage.setAttribute('checked',"")}
+closealpage.addEventListener('change', (updateValue) => {
+    if (settings.doujinshi.closealpage == 1) {settings.doujinshi.closealpage = 0}
+    else if (settings.doujinshi.closealpage == 0) {settings.doujinshi.closealpage = 1}
     savesettings()
 });
 

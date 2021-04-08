@@ -22,10 +22,22 @@ vertical-align: middle;
 font-size:20px;
 }
 
-
 .main-menu:hover,nav.main-menu.expanded {
 width:250px;
 overflow:visible;
+}
+
+#searchdiv,#minpage {
+padding-left: 62px;
+transition: 0.02s linear;
+}
+
+.main-menu:hover #searchdiv {
+padding-left: 15px;
+}
+
+.main-menu:hover #minpage {
+padding-left: 15px;
 }
 
 .main-menu {
@@ -291,4 +303,69 @@ background-color:#747474;
 
 ::-webkit-scrollbar-thumb:hover {
   background: #4b4b4b;
+}
+
+.slider {
+	position: relative;
+	z-index: 1;
+	height: 5px;
+	margin: 0 15px;
+}
+.slider > .track {
+	position: absolute;
+	z-index: 1;
+	left: 2%;
+	right: -5%;
+	top: 0;
+	bottom: 0;
+	border-radius: 5px;
+	background-color: #c6aee7;
+}
+.slider > .range {
+	position: absolute;
+	z-index: 2;
+	left: 0%;
+	right: 0%;
+	top: 0;
+	bottom: 0;
+	border-radius: 5px;
+	background-color: #6200ee;
+}
+.slider > .thumb {
+	position: absolute;
+	z-index: 3;
+	width: 20px;
+	height: 20px;
+  top: 3px;
+	background-color: #6200ee;
+	border-radius: 50%;
+	box-shadow: 0 0 0 0 rgba(98,0,238,.1);
+}
+.slider > .thumb.left {
+	left: 25%;
+	transform: translate(-5px, -10px);
+}
+.slider > .thumb.right {
+	right: 25%;
+	transform: translate(15px, -10px);
+}
+
+.doubleslider {
+	position: absolute;
+	pointer-events: none;
+	-webkit-appearance: none;
+	z-index: 2;
+	height: 10px;
+	width: 87%;
+	opacity: 0%;
+  bottom: 53px;
+}
+.doubleslider::-webkit-slider-thumb {
+	pointer-events: all;
+	width: 30px;
+	height: 30px;
+	border-radius: 0;
+	border: 0 none;
+	background-color: red;
+	-webkit-appearance: none;
 }
