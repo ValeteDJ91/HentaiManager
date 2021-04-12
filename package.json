@@ -1,6 +1,6 @@
 {
   "name": "hentaimanager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a program that help you manage your homework",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.839.0",
+    "electron-packager": "^15.2.0",
     "fs": "0.0.1-security",
     "image-size": "^0.9.4",
     "jquery": "^3.5.1"

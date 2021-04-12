@@ -24,9 +24,11 @@ var thumbRight = document.querySelector(".slider > .thumb.right");
 var range = document.querySelector(".slider > .range");
 
 // set max and min sliders
-fs.readdirSync(settings.doujinshi.folder).forEach(file => {
-    doujarray.push(file);
-});
+try {
+	fs.readdirSync(settings.doujinshi.folder).forEach(file => {
+	    doujarray.push(file);
+	});
+} catch(e) {console.error("Can't access doujinshi folder: "+settings.doujinshi.folder)}
 while (t < doujarray.length) {
     fs.readdirSync(settings.doujinshi.folder+"/"+doujarray[t]).forEach(file => {
         doujpgarraynow.push(file);
@@ -37,12 +39,24 @@ while (t < doujarray.length) {
     doujpgarraynow = [];
     t++
 }
-inputRight.max = doujpgarraylonger.length
-inputLeft.max = doujpgarraylonger.length
-inputRight.value = doujpgarraylonger.length
-inputRight.min = doujpgarrayshorter.length
-inputLeft.min = doujpgarrayshorter.length
-inputLeft.value = doujpgarrayshorter.length
+if (doujpgarraylonger.length) {
+	inputRight.max = doujpgarraylonger.length
+	inputLeft.max = doujpgarraylonger.length
+	inputRight.value = doujpgarraylonger.length
+} else {
+	inputRight.max = 100
+	inputLeft.max = 100
+	inputRight.value = 100
+}
+if (doujpgarrayshorter.length) {
+	inputRight.min = doujpgarrayshorter.length
+	inputLeft.min = doujpgarrayshorter.length
+	inputLeft.value = doujpgarrayshorter.length
+} else {
+	inputRight.min = 0
+	inputLeft.min = 0
+	inputLeft.value = 0
+}
 
 // sliders set up
 function setLeftValue() {

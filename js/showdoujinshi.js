@@ -14,15 +14,18 @@ if (settings.doujinshi.zoomindex > 500) {zoomindex = 500};
 if (settings.doujinshi.zoomindex < 25) {zoomindex = 25};
 
 // read all folder show them with title and first page
-fs.readdirSync(settings.doujinshi.folder).forEach(file => {
-    folderarray.push(file);
-});
+try {
+    fs.readdirSync(settings.doujinshi.folder).forEach(file => {
+        folderarray.push(file);
+    });
+} catch(e) {console.error("Can't access doujinshi folder: "+settings.doujinshi.folder)}
 var doujinshizone = document.getElementById("doujinshizone");
 if (folderarray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";doujinshizone.appendChild(nfa);nfa.innerHTML = "No doujinshi found ;(";}
 function loaddoujinshi(toload, search){
     document.getElementById("loadinginfo").style.display= "block"
 	document.getElementById("doujinshimodal").style.display= "none"
     var z = 0;
+    var pg = 0;
 
 	var titlesearch = document.getElementById("titlesearch").value
 	var tagsearch = document.getElementById("tagsearch").value
@@ -95,7 +98,7 @@ function loaddoujinshi(toload, search){
                     title.innerHTML = doujinshiinfo.name
                     previewcontainer.alt = doujinshiinfo.name
                 }
-                previewcontainer.id = "contdoujinshi"+i
+                previewcontainer.id = folderarray[i]
                 title.style = `margin: 6px;font-size: 13px;`
                 previewcontainer.appendChild(preview);
                 previewcontainer.appendChild(title);
@@ -123,7 +126,11 @@ function loaddoujinshi(toload, search){
     }
     document.getElementById("loadinginfo").style.display= "none"
 }
-loaddoujinshi(settings.doujinshi.doujloadfirst, 0)
+if (folderarray.length > 0) {
+    loaddoujinshi(settings.doujinshi.doujloadfirst, 0)
+} else {
+    document.getElementById("loadinginfo").style.display= "none"
+}
 document.getElementById("searchbutton").setAttribute('onclick',`loaddoujinshi(${settings.doujinshi.doujloadfirst}, 1)`)
 
 // load more doujinshi on scroll
@@ -173,6 +180,7 @@ document.onkeydown = function(evt) {
 
 // enter modal
 function viewdoujinshi(page, title) {
+    console.log("boudin blanc: "+pg+"\n"+page)
     var doujinshiinfo = 0
     document.getElementById("taglist").innerHTML = ""
     document.getElementById("characterlist").innerHTML = ""
@@ -330,6 +338,16 @@ function zoomin() {
 // open folder function because "" and `` and '' mess with onclick=""
 function openfolder() {
     require('child_process').exec(`start "" "${settings.doujinshi.folder}/${document.getElementById("modaldoujinshi").alt}"`);
+}
+
+// delete folder/doujinshi
+function deletefolder() {
+    var foldertodelete = settings.doujinshi.folder+"/"+document.getElementById("modaldoujinshi").alt
+    fs.rmdir(foldertodelete, { recursive: true }, () => {
+        console.log("Doujinshi deleted!");
+        document.getElementById(document.getElementById("modaldoujinshi").alt).remove();
+        modal.style.display = "none"
+    });
 }
 
 // image margin

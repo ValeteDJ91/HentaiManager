@@ -15,12 +15,19 @@ if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgs
 
 
 //find all imgs and create <img> with src
-fs.readdirSync(settings.image.folder).forEach(file => {
-    filearray.push(file);
-});
-
 var imagezone = document.getElementById("imagezone");
-if (filearray.length == 0) {var nfa = document.createElement("a");nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";imagezone.appendChild(nfa);nfa.innerHTML = "No images found ;(";}
+try {
+    fs.readdirSync(settings.image.folder).forEach(file => {
+        filearray.push(file);
+    });
+} catch(e) {console.error("Can't access image folder: "+settings.image.folder)}
+
+if (filearray.length == 0) {
+    var nfa = document.createElement("a");
+    nfa.style = "color:#ffffff;text-align:center; font-size: 230%;";
+    imagezone.appendChild(nfa);
+    nfa.innerHTML = "No images found ;(";
+}
 function loadimage(toload){
     document.getElementById("loadinginfo").style.display= "block"
     var z = 0;
@@ -31,10 +38,9 @@ function loadimage(toload){
                 var img = document.createElement("img");
                 img.src = settings.image.folder+"/"+filearray[i];
                 imagezone.appendChild(img);
-                img.id = "img"+i
                 img.style = `height: ${imgsize.height}px; width: ${imgsize.width}px;vertical-align: middle;`
-                img.alt = `${filearray[i]}`
-                img.setAttribute('onclick',`modal.style.display = 'block'; modalImg.src = this.src; modalImg.alt = this.alt;viewimage(this.alt)`)
+                img.id = filearray[i]
+                img.setAttribute('onclick',`modal.style.display = 'block'; modalImg.src = this.src; modalImg.alt = this.id;viewimage(this.id)`)
                 if(img.height > max_height[slider.value] && img.height>img.width || img.height==img.width)
                 {
                     ratio = max_height[slider.value] / img.height;
@@ -224,4 +230,50 @@ function viewimage(title) {
             t++
         }
     }
+}
+
+// delete image
+function deleteimg() {
+    var imagetodelete = settings.image.folder+"/"+modalImg.alt
+    fs.rmdir(imagetodelete, { recursive: true }, () => {
+        console.log("Image deleted!");
+        document.getElementById(modalImg.alt).remove();
+        modal.style.display = "none"
+    });
+}
+
+// zoom in modal
+var zoomindex = settings.image.zoomindex;
+if (settings.doujinshi.zoomindex > 500) {zoomindex = 500};
+if (settings.doujinshi.zoomindex < 25) {zoomindex = 25};
+var zoompercent = document.getElementById("zoompercent")
+zoompercent.innerHTML = zoomindex+"%"
+modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
+
+function zoomoutimg() {
+    if (zoomindex == 100 || zoomindex == 87.5 || zoomindex == 112.5 || zoomindex == 125 || zoomindex == 62.5 || zoomindex == 75 || zoomindex == 50 || zoomindex == 37.5) {zoomindex-=12.5}
+    else if (zoomindex == 25) {zoomindex=25}
+    else {zoomindex-=25}
+    if (settings.doujinshi.showfull == 1) {
+        var ful = 0
+        while (ful < doujinshiarray.length) {
+            document.getElementById("imageforfull"+ful).style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
+            ful++
+        }
+    } else {modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"}
+    zoompercent.innerHTML = zoomindex+"%"
+}
+
+function zoominimg() {
+    if (zoomindex == 100 || zoomindex == 87.5 || zoomindex == 112.5 || zoomindex == 75 || zoomindex == 62.5 || zoomindex == 50 || zoomindex == 37.5 || zoomindex == 25) {zoomindex+=12.5}
+    else if (zoomindex == 500) {zoomindex=500}
+    else {zoomindex+=25}
+    if (settings.doujinshi.showfull == 1) {
+        var ful = 0
+        while (ful < doujinshiarray.length) {
+            document.getElementById("imageforfull"+ful).style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
+            ful++
+        }
+    } else {modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px";}
+    zoompercent.innerHTML = zoomindex+"%"
 }

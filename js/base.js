@@ -1,9 +1,11 @@
 const fs = require('fs')
 var testregex = /[<>]/i
+var home = require("os").homedir();
 try {
     var jsoninput = fs.readFileSync('data/settings.json', 'utf8')
     var settings = JSON.parse(jsoninput)
 } catch (e) {
+    fs.mkdirSync("data");
     settings = {
         "general": {
             "recalcul": 0,
@@ -14,7 +16,8 @@ try {
             "folder": 0,
             "imgsize": 3,
             "imgloadfirst": 700,
-            "imgloadscroll": 400
+            "imgloadscroll": 400,
+            "zoomindex": 100
         },
         "doujinshi": {
             "folder": 0,

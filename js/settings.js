@@ -8,6 +8,7 @@ var imgloadfirst = document.getElementById("imgloadfirst");
 var imgloadscroll = document.getElementById("imgloadscroll");
 var doujinshifoldloc = document.getElementById("doujinshifoldloc");
 var doujsizeslider = document.getElementById("doujsizeslider");
+var imagesizeslider = document.getElementById("imagesizeslider");
 var doujloadfirst = document.getElementById("doujloadfirst");
 var doujloadscroll = document.getElementById("doujloadscroll");
 var scrolltop = document.getElementById("scrolltop");
@@ -67,6 +68,7 @@ function optionreset() {
     settings.image.imgsize = 3
     settings.image.imgloadfirst = 700
     settings.image.imgloadscroll = 500
+    settings.image.zoomindex = 100
     settings.doujinshi.folder = doujpath
     settings.doujinshi.zoomindex = 100
     settings.doujinshi.doujloadfirst = 80
@@ -124,6 +126,16 @@ imgloadscroll.addEventListener('change', (updateValue) => {
     settings.image.imgloadscroll = parseInt(event.target.value)
     savesettings()
 });
+
+// default imagemodal size  // 25 37.5 50 62.5 75 87.5 100 112.5 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475 500 
+if (settings.image.zoomindex) {imagesizeslider.setAttribute('value',zoomarray.indexOf(settings.image.zoomindex))}
+document.getElementById("imageslidervaluetext").innerHTML = zoomarray[imagesizeslider.value]+"%"
+imagesizeslider.oninput = function() {
+    console.log(zoomarray[imagesizeslider.value])
+    document.getElementById("imageslidervaluetext").innerHTML = zoomarray[imagesizeslider.value]+"%"
+    settings.image.zoomindex = zoomarray[imagesizeslider.value]
+    savesettings()
+}
 
 // ---------------------------DOUJINSHI-----------------------------------
 

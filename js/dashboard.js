@@ -13,7 +13,6 @@ var q = 0
 
 // set default settings
 if (settings.image.folder == 0 || settings.doujinshi.folder == 0) {
-    var home = require("os").homedir();
     var hmpath = home + "/Documents/HentaiManager";
     var imgpath = home + "/Documents/HentaiManager/image";
     var doujpath = home + "/Documents/HentaiManager/doujinshi";
@@ -33,12 +32,16 @@ if (settings.image.folder == 0 || settings.doujinshi.folder == 0) {
     })
 }
 
-fs.readdirSync(settings.image.folder).forEach(file => {
-    imgarray.push(file);
-});
-fs.readdirSync(settings.doujinshi.folder).forEach(file => {
-    doujarray.push(file);
-});
+try {
+    fs.readdirSync(settings.image.folder).forEach(file => {
+        imgarray.push(file);
+    });
+} catch(e) {console.error("Can't access image folder: "+settings.image.folder)}
+try {
+    fs.readdirSync(settings.doujinshi.folder).forEach(file => {
+        doujarray.push(file);
+    });
+} catch(e) {console.error("Can't access doujinshi folder: "+settings.doujinshi.folder)}
 while (i < doujarray.length) {
     fs.readdirSync(settings.doujinshi.folder+"/"+doujarray[i]).forEach(file => {
         doujpgarray.push(file);
@@ -46,8 +49,15 @@ while (i < doujarray.length) {
     i++
 }
 
-var jsoninput = fs.readFileSync('data/placeholder.json', 'utf8')
-var tagjson = JSON.parse(jsoninput)
+try {
+    var jsoninput = fs.readFileSync('data/placeholder.json', 'utf8')
+    var tagjson = JSON.parse(jsoninput)
+} catch (e) {
+    var tagjson = {"tag": {"doujinshi": [],"image": []},"character": {"doujinshi": [],"image": []},"imggroup": {"image": []}}
+    fs.writeFile('data/placeholder.json', tagjson, function (err) {
+        if (err) throw err;
+    })
+}
 
 // set image info
 document.getElementById("imagenumber").innerHTML = imgarray.length+" Images"
