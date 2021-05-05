@@ -265,3 +265,77 @@ document.getElementById("editartist").addEventListener('change', (updateValue) =
         document.getElementById("imgartist").innerHTML = "Artist: "+img[imginfoindex].artist
     }
 });
+
+// show tag list
+function tagliston() {
+    imagezone.innerHTML = '';
+    imagezone.innerHTML = '';
+    document.getElementById("imgmodal").style.display= "none"
+    imagezone.style.display = "block"
+    var palceholders = require('../data/placeholder.json');
+    var i = 0
+    while (i < palceholders.tag.image.length) {
+        var tag = document.createElement("a");
+        tag.innerHTML = palceholders.tag.image[i];
+        tag.className = "taglistentry"
+        tag.setAttribute('onclick',`document.getElementById("tagsearch").value = this.innerHTML; search()`)
+        imagezone.appendChild(tag);
+        i++
+    }
+}
+
+// show character list
+function characterliston() {
+    imagezone.innerHTML = '';
+    imagezone.innerHTML = '';
+    document.getElementById("imgmodal").style.display= "none"
+    imagezone.style.display = "block"
+    var palceholders = require('../data/placeholder.json');
+    var i = 0
+    while (i < palceholders.character.image.length) {
+        var character = document.createElement("a");
+        character.innerHTML = palceholders.character.image[i];
+        character.className = "taglistentry"
+        character.setAttribute('onclick',`document.getElementById("charactersearch").value = this.innerHTML; search()`)
+        imagezone.appendChild(character);
+        i++
+    }
+}
+
+// show imggroup list
+function imggroupliston() {
+    imagezone.innerHTML = '';
+    imagezone.innerHTML = '';
+    document.getElementById("imgmodal").style.display= "none"
+    imagezone.style.display = "block"
+    var palceholders = require('../data/placeholder.json');
+    var i = 0
+    while (i < palceholders.imggroup.image.length) {
+        var imggroup = document.createElement("a");
+        imggroup.innerHTML = palceholders.imggroup.image[i];
+        imggroup.className = "taglistentry"
+        imggroup.setAttribute('onclick',`document.getElementById("imggroupsearch").value = this.innerHTML; search()`)
+        imagezone.appendChild(imggroup);
+        i++
+    }
+}
+
+// favorite systeme
+function addfavorite() {
+    favoritestar.src = "../img/starfull.png"
+    favoritestar.setAttribute('onclick',`removefavorite()`)
+    favorite.image.push(modalimg.alt);
+    var jsonoutput = JSON.stringify(favorite, null, '\t')
+    fs.writeFile('data/favorite.json', jsonoutput, function (err) {if (err) throw err;});
+}
+
+function removefavorite() {
+    favoritestar.src = "../img/star.png"
+    favoritestar.setAttribute('onclick',`addfavorite()`)
+    var favoriteindex = favorite.image.indexOf(modalimg.alt)
+    if (favoriteindex > -1) {
+        favorite.image.splice(favoriteindex, 1)
+        var jsonoutput = JSON.stringify(favorite, null, '\t')
+        fs.writeFile('data/favorite.json', jsonoutput, function (err) {if (err) throw err;});
+    }
+}

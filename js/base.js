@@ -29,7 +29,7 @@ try {
             "margin": 0,
             "closealpage": 0
         },
-        "version": "Hentai manager v0.1.0"
+        "version": "Hentai manager v0.1.2"
     }
     var jsonoutput = JSON.stringify(settings, null, '\t')
     fs.writeFile('data/settings.json', jsonoutput, function (err) {if (err) throw err;});

@@ -5,14 +5,15 @@ var filearray = [];
 var i = 0;
 var max_height = [1, 40, 75, 130, 230, 400, 600];
 var max_width = [1, 40, 75, 130, 230, 400, 600];
+var favorite = require('../data/favorite.json');
 var slider = document.getElementById("sizeslider");
 var imgerrordir = settings.image.folder+"/Image_errors";
 var showtag = document.getElementById("showtag");
 var showcharacter = document.getElementById("showcharacter");
 var showimagegroup = document.getElementById("showimagegroup");
+var imagezone = document.getElementById("imagezone")
 var img = require('../data/image.json')
 if (settings.image.imgsize) {sizeslider.setAttribute('value',settings.image.imgsize)}
-
 
 //find all imgs and create <img> with src
 var imagezone = document.getElementById("imagezone");
@@ -136,6 +137,13 @@ document.onkeydown = function(evt) {
 // enter modal
 function viewimage(title) {
     var imginfo = 0
+    if (favorite.image.indexOf(title) > -1) {
+        favoritestar.src = "../img/starfull.png"
+        favoritestar.setAttribute('onclick',`removefavorite()`)
+    } else {
+        favoritestar.src = "../img/star.png"
+        favoritestar.setAttribute('onclick',`addfavorite()`)
+    }
     document.getElementById("showtag").innerHTML = ""
     document.getElementById("taglist").innerHTML = ""
     document.getElementById("characterlist").innerHTML = ""
@@ -244,8 +252,8 @@ function deleteimg() {
 
 // zoom in modal
 var zoomindex = settings.image.zoomindex;
-if (settings.doujinshi.zoomindex > 500) {zoomindex = 500};
-if (settings.doujinshi.zoomindex < 25) {zoomindex = 25};
+if (settings.image.zoomindex > 500) {zoomindex = 500};
+if (settings.image.zoomindex < 25) {zoomindex = 25};
 var zoompercent = document.getElementById("zoompercent")
 zoompercent.innerHTML = zoomindex+"%"
 modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
@@ -254,13 +262,7 @@ function zoomoutimg() {
     if (zoomindex == 100 || zoomindex == 87.5 || zoomindex == 112.5 || zoomindex == 125 || zoomindex == 62.5 || zoomindex == 75 || zoomindex == 50 || zoomindex == 37.5) {zoomindex-=12.5}
     else if (zoomindex == 25) {zoomindex=25}
     else {zoomindex-=25}
-    if (settings.doujinshi.showfull == 1) {
-        var ful = 0
-        while (ful < doujinshiarray.length) {
-            document.getElementById("imageforfull"+ful).style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
-            ful++
-        }
-    } else {modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"}
+    modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
     zoompercent.innerHTML = zoomindex+"%"
 }
 
@@ -268,12 +270,6 @@ function zoominimg() {
     if (zoomindex == 100 || zoomindex == 87.5 || zoomindex == 112.5 || zoomindex == 75 || zoomindex == 62.5 || zoomindex == 50 || zoomindex == 37.5 || zoomindex == 25) {zoomindex+=12.5}
     else if (zoomindex == 500) {zoomindex=500}
     else {zoomindex+=25}
-    if (settings.doujinshi.showfull == 1) {
-        var ful = 0
-        while (ful < doujinshiarray.length) {
-            document.getElementById("imageforfull"+ful).style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px;"
-            ful++
-        }
-    } else {modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px";}
+    modalImg.style = "margin: auto;display: block;width: 80%;max-width: "+700/100*zoomindex+"px";
     zoompercent.innerHTML = zoomindex+"%"
 }

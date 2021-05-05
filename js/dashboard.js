@@ -53,10 +53,23 @@ try {
     var jsoninput = fs.readFileSync('data/placeholder.json', 'utf8')
     var tagjson = JSON.parse(jsoninput)
 } catch (e) {
-    var tagjson = {"tag": {"doujinshi": [],"image": []},"character": {"doujinshi": [],"image": []},"imggroup": {"image": []}}
+    var tagjson = '{"tag": {"doujinshi": [],"image": []},"character": {"doujinshi": [],"image": []},"imggroup": {"image": []}}'
     fs.writeFile('data/placeholder.json', tagjson, function (err) {
         if (err) throw err;
     })
+    var favoritejson = '{"image": [],"doujinshi": []}'
+    fs.writeFile('data/favorite.json', favoritejson, function (err) {
+        if (err) throw err;
+    })
+    var imagejson = '[]'
+    fs.writeFile('data/image.json', imagejson, function (err) {
+        if (err) throw err;
+    })
+    var doujinshijson = '[]'
+    fs.writeFile('data/doujinshi.json', doujinshijson, function (err) {
+        if (err) throw err;
+    })
+    location.reload()
 }
 
 // set image info

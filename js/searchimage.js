@@ -13,24 +13,25 @@ function searchoff() {
 function search() {
 	var titlesearch = document.getElementById("titlesearch").value
 	var tagsearch = document.getElementById("tagsearch").value
-	var charactercearch = document.getElementById("charactercearch").value
+	var charactersearch = document.getElementById("charactersearch").value
 	var artistsearch = document.getElementById("artistsearch").value
 	var imggroupsearch = document.getElementById("imggroupsearch").value
-    if (titlesearch || tagsearch || charactercearch || artistsearch || imggroupsearch) {
-        imagezone.innerHTML = '';
-        i = 0;
-        modal.style.display = "none";
-    } else {return}
+	var favoritesearch = document.getElementById("favoritesearch").checked
+    imagezone.innerHTML = '';
+    i = 0;
+    modal.style.display = "none";
     filearray = [];
     fs.readdirSync(settings.image.folder).forEach(file => {
         var imgfile = file
         var addimg = 0
         var addimgneed = 0
+        var favorite = require('../data/favorite.json');
         if (titlesearch) {var addimgneed = addimgneed+1}
         if (tagsearch) {var addimgneed = addimgneed+1}
-        if (charactercearch) {var addimgneed = addimgneed+1}
+        if (charactersearch) {var addimgneed = addimgneed+1}
         if (artistsearch) {var addimgneed = addimgneed+1}
         if (imggroupsearch) {var addimgneed = addimgneed+1}
+        if (favoritesearch === "on") {var addimgneed = addimgneed+1}
         try {var fileinfo = img.find( ({ file }) => file === imgfile );}
         catch (e) {console.error(e)}
         finally {
@@ -41,15 +42,17 @@ function search() {
             if (fileinfo && tagsearch && fileinfo.tag.indexOf(tagsearch) > -1) {var addimg = addimg+1;} 
             else if (fileinfo && tagsearch && fileinfo.tag.indexOf(tagsearch) == -1) {var addimg = addimg-1;}
             else if (!fileinfo && tagsearch) {var addimg = addimg-1;}
-            if (fileinfo && charactercearch && fileinfo.character.indexOf(charactercearch) > -1) {var addimg = addimg+1;} 
-            else if (fileinfo && charactercearch && fileinfo.character.indexOf(charactercearch) == -1) {var addimg = addimg-1;}
-            else if (!fileinfo && charactercearch) {var addimg = addimg-1;}
+            if (fileinfo && charactersearch && fileinfo.character.indexOf(charactersearch) > -1) {var addimg = addimg+1;} 
+            else if (fileinfo && charactersearch && fileinfo.character.indexOf(charactersearch) == -1) {var addimg = addimg-1;}
+            else if (!fileinfo && charactersearch) {var addimg = addimg-1;}
             if (fileinfo && artistsearch && fileinfo.artist.includes(artistsearch)) {var addimg = addimg+1;} 
             else if (fileinfo && artistsearch && !!fileinfo.artist.includes(artistsearch)) {var addimg = addimg-1;}
             else if (!fileinfo && artistsearch) {var addimg = addimg-1;}
             if (fileinfo && imggroupsearch && fileinfo.character.indexOf(imggroupsearch) > -1) {var addimg = addimg+1;} 
             else if (fileinfo && imggroupsearch && fileinfo.character.indexOf(imggroupsearch) == -1) {var addimg = addimg-1;}
             else if (!fileinfo && imggroupsearch) {var addimg = addimg-1;}
+            if (favoritesearch == true && favorite.image.indexOf(imgfile) > -1) {var addimg = addimg+1;}
+            else if (favoritesearch == true && favorite.image.indexOf(imgfile) == -1) {var addimg = addimg-1;}
             if (addimg >= addimgneed) {
                 filearray.push(file);
             }

@@ -92,6 +92,9 @@ function jsonreset() {
     tag = {"tag":{"doujinshi": [],"image": []},"character":{"doujinshi": [],"image": []},"imggroup":{"image": []}}
     var jsonoutput = JSON.stringify(tag, null, '\t')
     fs.writeFile('data/placeholder.json', jsonoutput, function (err) {if (err) throw err;});
+    favorite = {"image": [],"doujinshi": []}
+    var jsonoutput = JSON.stringify(favorite, null, '\t')
+    fs.writeFile('data/favorite.json', jsonoutput, function (err) {if (err) throw err;});
     savesettings()
 }
 

@@ -13,11 +13,14 @@ var doujarray = [];
 var doujpgarraynow = [];
 var doujpgarraylonger = [];
 var doujpgarrayshorter = [];
+var folderarray = [];
+var favorite = require('../data/favorite.json');
 var t = 0;
 var inputLeft = document.getElementById("input-left");
 var inputRight = document.getElementById("input-right");
 var minpage = document.getElementById("minpage");
 var maxpage = document.getElementById("maxpage");
+var doujtagzone = document.getElementById("doujtagzone")
 
 var thumbLeft = document.querySelector(".slider > .thumb.left");
 var thumbRight = document.querySelector(".slider > .thumb.right");
@@ -26,11 +29,11 @@ var range = document.querySelector(".slider > .range");
 // set max and min sliders
 try {
 	fs.readdirSync(settings.doujinshi.folder).forEach(file => {
-	    doujarray.push(file);
+	    folderarray.push(file);
 	});
 } catch(e) {console.error("Can't access doujinshi folder: "+settings.doujinshi.folder)}
-while (t < doujarray.length) {
-    fs.readdirSync(settings.doujinshi.folder+"/"+doujarray[t]).forEach(file => {
+while (t < folderarray.length) {
+    fs.readdirSync(settings.doujinshi.folder+"/"+folderarray[t]).forEach(file => {
         doujpgarraynow.push(file);
     });
     if (doujpgarraynow.length > doujpgarraylonger.length) {doujpgarraylonger = doujpgarraynow;}

@@ -1,5 +1,6 @@
 var tagcross = document.getElementsByClassName('tagcross');
 var charactercross = document.getElementsByClassName('charactercross');
+var favoritestar = document.getElementById("favoritestar")
 var j = 0;
 var e = 0;
 
@@ -228,3 +229,59 @@ document.getElementById("editdate").addEventListener('change', (updateValue) => 
         document.getElementById("doujinshidate").innerHTML = "Date: "+doujinshi[doujinshiinfoindex].date
     }
 });
+
+// show tag list
+function tagliston() {
+    doujinshizone.innerHTML = '';
+    doujtagzone.innerHTML = '';
+    document.getElementById("doujinshimodal").style.display= "none"
+    doujtagzone.style.display = "block"
+    var palceholders = require('../data/placeholder.json');
+    var i = 0
+    while (i < palceholders.tag.doujinshi.length) {
+        var tag = document.createElement("a");
+        tag.innerHTML = palceholders.tag.doujinshi[i];
+        tag.className = "taglistentry"
+        tag.setAttribute('onclick',`tagsearch.value = this.innerHTML; loaddoujinshi(80, 1)`)
+        doujtagzone.appendChild(tag);
+        i++
+    }
+}
+
+// show character list
+function characterliston() {
+    doujinshizone.innerHTML = '';
+    doujtagzone.innerHTML = '';
+    document.getElementById("doujinshimodal").style.display= "none"
+    doujtagzone.style.display = "block"
+    var palceholders = require('../data/placeholder.json');
+    var i = 0
+    while (i < palceholders.character.doujinshi.length) {
+        var character = document.createElement("a");
+        character.innerHTML = palceholders.character.doujinshi[i];
+        character.className = "taglistentry"
+        character.setAttribute('onclick',`charactersearch.value = this.innerHTML; loaddoujinshi(80, 1)`)
+        doujtagzone.appendChild(character);
+        i++
+    }
+}
+
+// favorite systeme
+function addfavorite() {
+    favoritestar.src = "../img/starfull.png"
+    favoritestar.setAttribute('onclick',`removefavorite()`)
+    favorite.doujinshi.push(modaldoujinshi.alt);
+    var jsonoutput = JSON.stringify(favorite, null, '\t')
+    fs.writeFile('data/favorite.json', jsonoutput, function (err) {if (err) throw err;});
+}
+
+function removefavorite() {
+    favoritestar.src = "../img/star.png"
+    favoritestar.setAttribute('onclick',`addfavorite()`)
+    var favoriteindex = favorite.doujinshi.indexOf(modaldoujinshi.alt)
+    if (favoriteindex > -1) {
+        favorite.doujinshi.splice(favoriteindex, 1)
+        var jsonoutput = JSON.stringify(favorite, null, '\t')
+        fs.writeFile('data/favorite.json', jsonoutput, function (err) {if (err) throw err;});
+    }
+}

@@ -369,3 +369,29 @@ background-color:#747474;
 	background-color: red;
 	-webkit-appearance: none;
 }
+
+.searchtitle {
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+
+.searchtitle:hover,
+.searchtitle:focus {
+  text-decoration: underline;
+  cursor: pointer; 
+}
+
+.taglistentry {
+  background-color: #292929;
+  padding: 5px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 7px;
+  margin-top: 5px;
+  color: #cacaca;
+  cursor: pointer
+}
+
+.taglistentry:hover {
+  background-color: #353535;
+}

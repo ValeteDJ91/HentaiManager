@@ -41,15 +41,15 @@
                     <i class="fa fa-2x"><img style="height: 15px;margin-top: 5px;" src="../img/droparrow.png"></i>
                 </a>
                 <div style="display: none" id="searchdiv">
-                    <p style="margin-bottom: 5px;color: #ffffff;">Title:</p>
-                    <input value="" style="margin-left: 10px;" id="titlesearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Tag:</p>
-                    <input value="" style="margin-left: 10px;" id="tagsearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Character:</p>
-                    <input value="" style="margin-left: 10px;" id="charactercearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Artist:</p>
-                    <input value="" style="margin-left: 10px;" id="artistsearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Page:</p>
+                    <p class="searchtitle">Title:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="titlesearch"></input>
+                    <p class="searchtitle" onclick="tagliston()">Tag:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="tagsearch"></input>
+                    <p class="searchtitle" onclick="characterliston()">Character:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="charactersearch"></input>
+                    <p class="searchtitle">Artist:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="artistsearch"></input>
+                    <p class="searchtitle">Page:</p>
                     <p style="display: inline-block;left: 12px;text-align: left;position: absolute;margin-top:8px;" id="minpage">1</p>
                     <p style="display: inline-block;right: 16px;position: absolute;text-align: right;margin-top:8px;" id="maxpage">1843</p>
                     <div style="margin-top: 44px;margin-right: 20px;">
@@ -62,6 +62,8 @@
                             <div class="thumb right"></div>
                         </div>
                     </div>
+                    <p class="searchtitle" style="display: inline-block">Favorite only:</p>
+                    <input type="checkbox" id="favoritesearch" style="vertical-align: middle;display: inline-block">
                     <button style="vertical-align:middle; border-radius: 0;margin-top: 23px;width:120px;height: 30px;margin-left: 50px;" onclick="search()" id="searchbutton">Search</button>
                 </div>
             </li>
@@ -81,12 +83,17 @@
         <div id="doujinshizone" style="text-align: center">
 
         </div>
+        <!--DOUJINSHI TAG LIST ZONE-->
+        <div id="doujtagzone" style="display: none;text-align: center;max-width: 95%;margin-left: 2%;margin-top: 28px">
+        
+        </div>
         <!--DOUJINSHI MODAL/ZOOM-->
         <div id="doujinshimodal" class="modal">    
             <!-- doujinshi info -->
-            <div style="background-color:#2b2b2bbb;width: 100%;text-align: left;vertical-align: middle;padding-top: 12px;">
+            <div style="background-color:#2b2b2bbb;width: 100%;text-align: left;vertical-align: middle;padding-top: 12px;" id="topinfo">
                 <img style="position: absolute;left: 60px;top: 8px;width: 30px;cursor: pointer;" src="../img/folder.png" onclick="openfolder()">
                 <img style="position: absolute;left: 90px;top: 8px;width: 30px;cursor: pointer;" src="../img/bin.png" onclick="deletefolder()">
+                <img style="position: absolute;right: 10px;top: 8px;width: 30px;cursor: pointer;" id="favoritestar" src="../img/star.png" onclick="addfavorite()">
                 <div style="margin-left:16%;max-width: 100%;">
                     <p id="doujinshititle" style="color: #e0e0e0;margin-top: 0px;margin-bottom: 10px;display:inline-block;max-width: 90%;vertical-align: top">Title: </p>
                     <input id="edittitle" value="" style="color:#e0e0e0;width: 55%;height: 17px;background-color:#2b2b2b00;display: none;margin-top: -5px;">

@@ -41,16 +41,18 @@
                     <i class="fa fa-2x"><img style="height: 15px;margin-top: 5px;" src="../img/droparrow.png"></i>
                 </a>
                 <div style="display: none" id="searchdiv">
-                    <p style="margin-bottom: 5px;color: #ffffff;">Title:</p>
-                    <input value="" style="margin-left: 10px;" id="titlesearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Tag:</p>
-                    <input value="" style="margin-left: 10px;" id="tagsearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Character:</p>
-                    <input value="" style="margin-left: 10px;" id="charactercearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">Artist:</p>
-                    <input value="" style="margin-left: 10px;" id="artistsearch"></input>
-                    <p style="margin-bottom: 5px;color: #ffffff;">ImgGroup:</p>
-                    <input value="" style="margin-left: 10px;" id="imggroupsearch"></input>
+                    <p class="searchtitle">Title:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="titlesearch"></input>
+                    <p class="searchtitle" onclick="tagliston()">Tag:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="tagsearch"></input>
+                    <p class="searchtitle" onclick="characterliston()">Character:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="charactersearch"></input>
+                    <p class="searchtitle">Artist:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="artistsearch"></input>
+                    <p class="searchtitle" onclick="imggroupliston()">ImgGroup:</p>
+                    <input value="" style="margin-left: 10px;width: 185px" id="imggroupsearch"></input>
+                    <p class="searchtitle" style="display: inline-block">Favorite only:</p>
+                    <input type="checkbox" id="favoritesearch" style="vertical-align: middle;display: inline-block">
                     <button style="vertical-align:middle; border-radius: 0;margin-top: 20px;width:120px;height: 30px;margin-left: 50px;" onclick="search()">Search</button>
                 </div>
             </li>
@@ -78,12 +80,17 @@
         <div id="imagezone" style="text-align: center">
             <!--IMGS-->
         </div>
+        <!--IMAGE TAG LIST ZONE-->
+        <div id="imgtagzone" style="display: none;text-align: center;max-width: 95%;margin-left: 2%;margin-top: 28px">
+        
+        </div>
         <!--IMG MODAL/ZOOM-->
         <div id="imgmodal" class="modal" style="margin-bottom: 30px;">
             <span class="close">&times;</span>
             <img class="modal-content" id="modalimg">
             <img style="position: absolute;left: 65px;top: 8px;width: 25px;cursor: pointer;" src="../img/bin.png" onclick="deleteimg()">
-            <div style="position: absolute;top: -5px;left: 105px;padding: 0; margin: 0">
+            <img style="position: absolute;left: 97px;top: 8px;width: 26px;cursor: pointer;" id="favoritestar" src="../img/star.png" onclick="addfavorite()">
+            <div style="position: absolute;top: -5px;left: 133px;padding: 0; margin: 0">
                 <img src="../img/zoomout.png" style="width: 27px;display:inline-block;vertical-align: middle;cursor: pointer;position: relative;" onclick="zoomoutimg()">
                 <p id="zoompercent" style="display:inline-block;color: #d1d1d1;font-size: 17px;vertical-align: middle;position: relative;">100%</p>
                 <img src="../img/zoomin.png" style="width: 27px;display:inline-block;vertical-align: middle;cursor: pointer;position: relative;" onclick="zoominimg()">
@@ -136,5 +143,5 @@
 
 <script src="../js/base.js"></script>
 <script src="../js/showimage.js"></script>
-<script src="../js/tagimage.js"></script>
 <script src="../js/searchimage.js"></script>
+<script src="../js/tagimage.js"></script>

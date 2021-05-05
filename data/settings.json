@@ -2,7 +2,7 @@
 	"general": {
 		"recalcul": 0,
 		"imgfoldsize": "33.80Go",
-		"doujfoldsize": "53.61Go"
+		"doujfoldsize": "112.70Go"
 	},
 	"image": {
 		"folder": "V:/HomeWork/Image",
@@ -16,10 +16,10 @@
 		"zoomindex": 100,
 		"doujloadfirst": 80,
 		"doujloadscroll": 40,
-		"scrolltotop": 0,
-		"showfull": 0,
+		"scrolltotop": 1,
+		"showfull": 1,
 		"margin": 0,
 		"closealpage": 0
 	},
-	"version": "Hentai manager v0.1.1"
+	"version": "Hentai manager v0.1.2"
 }
